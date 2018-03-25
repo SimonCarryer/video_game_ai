@@ -1,0 +1,2 @@
+FRICTION = 0.2
+MAX_SPEED = 10
