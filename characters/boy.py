@@ -10,7 +10,8 @@ class Boy():
         self.brain = Brain()
 
     def update(self, screen):
-        goal_vector = self.brain.get_goal_vector(self.movement.coords)
+        goal_vector = self.brain.get_goal_vector(self.movement.coords, 
+                                                 self.movement.velocity)
         self.movement.set_accelleration(goal_vector)
         self.movement.move()
         self.sprite.draw(self.movement.coords, screen)

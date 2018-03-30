@@ -8,3 +8,8 @@ def normalise_vector(vector):
 
 def magnitude_vector(vector):
     return np.linalg.norm(vector)
+
+
+def distance_to_target(current, target):
+    return np.linalg.norm(target-current)
+
