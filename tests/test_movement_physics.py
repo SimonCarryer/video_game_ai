@@ -75,4 +75,3 @@ def test_setting_goal_vector_applies_max_accelleration():
     goal_vector = np.array((1.0, 0.0))
     obj.set_accelleration(goal_vector)
     assert (obj.accelleration == np.array((3.0, 0.0))).all()
-

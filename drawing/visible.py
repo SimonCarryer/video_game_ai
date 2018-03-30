@@ -15,3 +15,18 @@ class Visible(pygame.sprite.Sprite):
     def draw(self, coords, screen):
         self.change_rect_center(coords)
         pygame.draw.ellipse(screen, self.colour, self.rect)
+
+
+class VisibleWall(pygame.sprite.Sprite):
+    def __init__(self, start_position, end_position, colour=(0, 220, 0)):
+        super(VisibleWall, self).__init__()
+        self.colour = colour
+        self.start_position = start_position
+        self.end_position = end_position
+
+    def draw(self, screen):
+        pygame.draw.line(screen, 
+                         self.colour, 
+                         self.start_position, 
+                         self.end_position,
+                         2)
