@@ -43,8 +43,27 @@ def test_apply_max_speeds_limits_speed_to_10():
     assert np.linalg.norm(reduced_velocity) == 10
 
 
+def test_apply_minimum_speed_rounds_low_speed_to_0():
+    obj = Moving([10, 10])
+    velocity = np.array([0.04, 0.0])
+    reduced_velocity = obj.apply_min_speed(velocity)
+    assert (reduced_velocity == [0.0, 0.0]).all()
+    velocity = np.array([0.4, 0.0])
+    reduced_velocity = obj.apply_min_speed(velocity)
+    assert (reduced_velocity == [0.4, 0.0]).all()
+
+
 def test_recalculate_velocity_adds_accelleration():
     obj = Moving([10, 10], initial_velocity=[1, 1])
     obj.accelleration = np.array([1.0, 0.0])
     obj.recalculate_velocity()
     assert (obj.velocity == np.array([1.6, 0.8])).all()
+
+
+def test_move_retains_momentum():
+    obj = Moving([10, 10], initial_velocity=[10, 0])
+    assert (obj.velocity == [10, 0]).all()
+    obj.move()
+    assert (obj.velocity == [8, 0]).all()
+    obj.move()
+    assert (obj.velocity == [6.4, 0]).all()

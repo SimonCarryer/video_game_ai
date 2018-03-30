@@ -26,9 +26,21 @@ class Moving:
             velocity = vector * MAX_SPEED
         return velocity
 
+    def apply_min_speed(self, velocity):
+        speed = magnitude_vector(velocity)
+        if speed < MIN_SPEED:
+            velocity = np.array((0, 0))
+        return velocity
+
     def recalculate_velocity(self):
         velocity = self.coords - self.last_coords
         velocity += self.accelleration
         velocity = self.apply_friction(velocity)
         velocity = self.apply_max_speed(velocity)
+        velocity = self.apply_min_speed(velocity)
         self.velocity = velocity
+
+    def move(self):
+        self.recalculate_velocity()
+        self.last_coords = self.coords
+        self.coords = self.velocity + self.coords
