@@ -17,7 +17,7 @@ def test_calculate_vector_to_target_reduces_vector_for_close_targets():
     target = np.array((12.0, 10.0))
     velocity = np.array((0.0, 0.0))
     vector = lizard_brain.calculate_vector_to_target(current, velocity, target)
-    assert vector[0] == 0.2
+    assert vector[0] == 0.4
     target = np.array((11.0, 10.0))
     vector = lizard_brain.calculate_vector_to_target(current, velocity, target)
-    assert vector[0] == 0.1
+    assert vector[0] == 0.2
