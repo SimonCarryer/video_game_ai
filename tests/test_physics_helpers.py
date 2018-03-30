@@ -1,5 +1,5 @@
 import numpy as np
-from physics.helpers import *
+from util.helpers import *
 
 
 def test_normalise_vector():

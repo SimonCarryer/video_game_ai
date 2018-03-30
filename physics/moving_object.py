@@ -1,6 +1,6 @@
 import numpy as np
 from .constants import *
-from .helpers import *
+from util.helpers import *
 
 
 class Moving:
@@ -10,6 +10,7 @@ class Moving:
         self.coords = np.array([float(i) for i in initial_location])
         self.velocity = np.array([float(i) for i in initial_velocity])
         self.last_coords = self.coords - self.velocity
+        self.max_accelleration = 3
         self.accelleration = np.array([0.0, 0.0])
 
     def apply_friction(self, velocity):
@@ -39,6 +40,9 @@ class Moving:
         velocity = self.apply_max_speed(velocity)
         velocity = self.apply_min_speed(velocity)
         self.velocity = velocity
+
+    def set_accelleration(self, goal_vector):
+        self.accelleration = goal_vector * self.max_accelleration
 
     def move(self):
         self.recalculate_velocity()

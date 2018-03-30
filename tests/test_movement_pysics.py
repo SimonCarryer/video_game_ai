@@ -67,3 +67,12 @@ def test_move_retains_momentum():
     assert (obj.velocity == [8, 0]).all()
     obj.move()
     assert (obj.velocity == [6.4, 0]).all()
+
+
+def test_setting_goal_vector_applies_max_accelleration():
+    obj = Moving([10, 10])
+    assert (obj.accelleration == np.array((0.0, 0.0))).all()
+    goal_vector = np.array((1.0, 0.0))
+    obj.set_accelleration(goal_vector)
+    assert (obj.accelleration == np.array((3.0, 0.0))).all()
+
