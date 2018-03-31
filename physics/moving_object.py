@@ -44,6 +44,15 @@ class Moving:
     def set_accelleration(self, goal_vector):
         self.accelleration = goal_vector * self.max_accelleration
 
+    def check_for_collisions(self, list_of_walls):
+        collision_points = []
+        anticipated_position = self.coords + self.velocity
+        for wall in list_of_walls:
+            collision_point = wall.collide(self.coords, anticipated_position)
+            if collision_point:
+                collision_points.append(collision_point)
+        return collision_points
+
     def move(self):
         self.recalculate_velocity()
         self.last_coords = self.coords

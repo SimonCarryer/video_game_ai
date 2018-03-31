@@ -32,3 +32,20 @@ def find_intersecting_point(line_a_start,
     denom = np.dot(dap, db)
     num = np.dot(dap, dp)
     return (num / denom.astype(float)) * db + line_b_start
+
+
+def counterclockwise_points(point_a, point_b, point_c):
+    a = (point_c[1] - point_a[1]) * (point_b[0] - point_a[0])
+    b = (point_b[1] - point_a[1]) * (point_c[0] - point_a[0])
+    return a > b
+
+
+def check_for_line_intersection(line_a_start,
+                                line_a_end,
+                                line_b_start,
+                                line_b_end):
+    a = counterclockwise_points(line_a_start, line_b_start, line_b_end)
+    b = counterclockwise_points(line_a_end, line_b_start, line_b_end)
+    c = counterclockwise_points(line_a_start, line_a_end, line_b_start)
+    d = counterclockwise_points(line_a_start, line_a_end, line_b_end)
+    return a != b and c != d

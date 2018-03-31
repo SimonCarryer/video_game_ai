@@ -21,7 +21,30 @@ def test_intersecting_lines_returns_intersection_point():
     line_one_end = np.array((2.0, 4.0))
     line_two_start = np.array((1.0, 3.0))
     line_two_end = np.array((3.0, 3.0))
-    print find_intersecting_point(line_one_start, 
-                                  line_one_end, 
-                                  line_two_start, 
-                                  line_two_end)
+    intersection = find_intersecting_point(line_one_start,
+                                           line_one_end,
+                                           line_two_start,
+                                           line_two_end)
+    assert (intersection == [2.0, 3.0]).all()
+
+
+def test_check_for_line_intersection_finds_true_intesections():
+    line_one_start = np.array((2.0, 2.0))
+    line_one_end = np.array((2.0, 4.0))
+    line_two_start = np.array((1.0, 3.0))
+    line_two_end = np.array((3.0, 3.0))
+    assert check_for_line_intersection(line_one_start,
+                                       line_one_end,
+                                       line_two_start,
+                                       line_two_end)
+
+
+def test_check_for_line_intersection_finds_no_intesections():
+    line_one_start = np.array((4.0, 2.0))
+    line_one_end = np.array((4.0, 4.0))
+    line_two_start = np.array((1.0, 3.0))
+    line_two_end = np.array((3.0, 3.0))
+    assert not check_for_line_intersection(line_one_start,
+                                           line_one_end,
+                                           line_two_start,
+                                           line_two_end)
