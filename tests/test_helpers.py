@@ -48,3 +48,13 @@ def test_check_for_line_intersection_finds_no_intesections():
                                            line_one_end,
                                            line_two_start,
                                            line_two_end)
+
+
+def test_find_closest_point():
+    origin = np.array((4.0, 2.0))
+    point_one = np.array((4.0, 4.0))
+    point_two = np.array((1.0, 3.0))
+    point_three = np.array((3.0, 3.0))
+    closest_point = find_closest_point(origin, 
+                                       [point_one, point_two, point_three])
+    assert (closest_point == point_three).all()

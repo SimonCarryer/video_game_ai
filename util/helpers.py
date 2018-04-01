@@ -1,5 +1,6 @@
 import numpy as np
 from sklearn.preprocessing import normalize
+from sklearn.metrics.pairwise import euclidean_distances
 
 
 def normalise_vector(vector):
@@ -49,3 +50,31 @@ def check_for_line_intersection(line_a_start,
     c = counterclockwise_points(line_a_start, line_a_end, line_b_start)
     d = counterclockwise_points(line_a_start, line_a_end, line_b_end)
     return a != b and c != d
+
+
+def find_closest_point(origin, list_of_points):
+    origin = origin.reshape(1, -1)
+    closest_index = euclidean_distances(origin, list_of_points).argmin()
+    return list_of_points[closest_index]
+
+
+def check_for_collisions(start, end, list_of_walls):
+    collision_points = []
+    for wall in list_of_walls:
+        collision_point = wall.collide(start, end)
+        if collision_point:
+            collision_points.append(collision_point)
+    return collision_points
+
+
+def get_closest_collision_point(start, end, list_of_walls):
+    collision_points = check_for_collisions(start, end, list_of_walls)
+    if collision_points:
+        if len(collision_points) > 1:
+            closest_collision_point = find_closest_point(start, 
+                                                         collision_points)
+        else:
+            closest_collision_point = collision_points[0]
+    else:
+        closest_collision_point = None
+    return closest_collision_point
