@@ -13,4 +13,4 @@ class Arena:
 
     def update_screen_objects(self, screen):
         for screen_object in self.screen_objects:
-            screen_object.update(screen)
+            screen_object.update(screen, self.screen_objects)

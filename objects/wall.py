@@ -9,7 +9,7 @@ class Wall:
         self.start = start
         self.end = end
 
-    def update(self, screen):
+    def update(self, screen, list_of_walls):
         self.sprite.draw(screen)
 
     def collide(self, movement_start, movement_end):

@@ -9,9 +9,12 @@ class Boy():
         self.movement = Moving(coords, initial_velocity=initial_velocity)
         self.brain = Brain()
 
-    def update(self, screen):
+    def collide(self, movement_start, movement_end):
+        return None
+
+    def update(self, screen, list_of_walls):
         goal_vector = self.brain.get_goal_vector(self.movement.coords, 
                                                  self.movement.velocity)
         self.movement.set_accelleration(goal_vector)
-        self.movement.move()
+        self.movement.move(list_of_walls)
         self.sprite.draw(self.movement.coords, screen)

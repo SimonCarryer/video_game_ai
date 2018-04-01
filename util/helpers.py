@@ -62,7 +62,7 @@ def check_for_collisions(start, end, list_of_walls):
     collision_points = []
     for wall in list_of_walls:
         collision_point = wall.collide(start, end)
-        if collision_point:
+        if collision_point is not None:
             collision_points.append(collision_point)
     return collision_points
 
