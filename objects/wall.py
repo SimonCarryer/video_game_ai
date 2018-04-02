@@ -1,16 +1,16 @@
-from drawing.visible import VisibleWall
-from physics.physical_object import PhysicalWall
+from drawing.visible import VisibleLine
+from physics.physical_object import ObstructingLine
 
 
 class Wall:
     def __init__(self, start, end):
-        self.sprite = VisibleWall(start, end)
-        self.substance = PhysicalWall(start, end)
+        self.sprite = VisibleLine(start, end)
+        self.substance = ObstructingLine(start, end)
         self.start = start
         self.end = end
 
     def update(self, screen, list_of_walls):
         self.sprite.draw(screen)
 
-    def collide(self, movement_start, movement_end):
-        return self.substance.collide(movement_start, movement_end)
+    def collide(self, colliding_object):
+        return self.substance.collide_with_circle(colliding_object)

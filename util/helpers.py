@@ -53,8 +53,11 @@ def check_for_line_intersection(line_a_start,
 
 
 def find_closest_point(origin, list_of_points):
-    origin = origin.reshape(1, -1)
-    closest_index = euclidean_distances(origin, list_of_points).argmin()
+    if len(list_of_points) == 1:
+        closest_index = 0
+    else:
+        origin = origin.reshape(1, -1)
+        closest_index = euclidean_distances(origin, list_of_points).argmin()
     return list_of_points[closest_index]
 
 

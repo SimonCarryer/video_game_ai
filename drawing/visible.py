@@ -17,9 +17,9 @@ class Visible(pygame.sprite.Sprite):
         pygame.draw.ellipse(screen, self.colour, self.rect)
 
 
-class VisibleWall(pygame.sprite.Sprite):
+class VisibleLine(pygame.sprite.Sprite):
     def __init__(self, start_position, end_position, colour=(0, 220, 0)):
-        super(VisibleWall, self).__init__()
+        super(VisibleLine, self).__init__()
         self.colour = colour
         self.start_position = start_position
         self.end_position = end_position
