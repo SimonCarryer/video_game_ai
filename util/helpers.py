@@ -109,16 +109,14 @@ def check_if_point_is_on_line_segment(line_start, line_end, point):
 
 
 def circle_line_collision(line_start, line_end, circle_center, circle_radius):
-    if point_inside_circle(circle_center, circle_radius, line_start):
-        return True
-    if point_inside_circle(circle_center, circle_radius, line_end):
-        return True
+    # all this thanks to http://www.jeffreythompson.org/collision-detection/
     closest_point = closest_point_on_line(line_start, line_end, circle_center)
     if distance_between_points(circle_center, closest_point) < circle_radius:
         if check_if_point_is_on_line_segment(line_start, line_end, closest_point):
-            return True
-    return False
-
-
-    
+            return closest_point
+    if point_inside_circle(circle_center, circle_radius, line_start):
+        return line_start
+    if point_inside_circle(circle_center, circle_radius, line_end):
+        return line_end
+    return None
 

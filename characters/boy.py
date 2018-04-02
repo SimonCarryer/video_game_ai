@@ -1,12 +1,12 @@
 from drawing.visible import Visible
-from physics.moving_object import Moving
+from physics.moving_circle import MovingCircle
 from brains.brain import Brain
 
 
 class Boy():
     def __init__(self, coords, initial_velocity):
         self.sprite = Visible(coords, (15, 15), colour=(220, 0, 0))
-        self.movement = Moving(coords, initial_velocity=initial_velocity)
+        self.movement = MovingCircle(coords, initial_velocity=initial_velocity)
         self.brain = Brain()
 
     def collide(self, movement_start, movement_end):

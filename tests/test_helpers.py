@@ -112,6 +112,19 @@ def test_check_if_point_is_on_line():
 def test_circle_line_collision():
     circle_center = np.array((4.1, 3.0))
     circle_radius = 0.2
-    assert circle_line_collision(vertical_line[0], vertical_line[1], circle_center, circle_radius)
+    collision_point = circle_line_collision(vertical_line[0], vertical_line[1], circle_center, circle_radius)
+    assert (collision_point == [4.0, 3.0]).all()
     circle_center = np.array((4.3, 3.0))
-    assert not circle_line_collision(vertical_line[0], vertical_line[1], circle_center, circle_radius)
+    collision_point = circle_line_collision(vertical_line[0], vertical_line[1], circle_center, circle_radius)
+    assert collision_point is None
+
+
+def test_circle_line_collision_with_end_point():
+    circle_center = np.array((4.0, 4.1))
+    circle_radius = 0.2
+    collision_point = circle_line_collision(vertical_line[0], vertical_line[1], circle_center, circle_radius)
+    assert (collision_point == [4.0, 4.0]).all()
+    circle_center = np.array((4.0, 4.3))
+    collision_point = circle_line_collision(vertical_line[0], vertical_line[1], circle_center, circle_radius)
+    assert collision_point is None
+    

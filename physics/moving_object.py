@@ -11,7 +11,6 @@ class Moving:
         self.velocity = np.array([float(i) for i in initial_velocity])
         self.last_coords = self.coords - self.velocity
         self.max_accelleration = 3
-        self.buffer = 10
         self.accelleration = np.array([0.0, 0.0])
 
     def apply_friction(self, velocity):
@@ -45,30 +44,7 @@ class Moving:
     def set_accelleration(self, goal_vector):
         self.accelleration = goal_vector * self.max_accelleration
 
-    def move_up_to_collision_point(self, collision_point):
-        self.last_coords = self.coords
-        for axis in (0, 1):
-            if self.velocity[axis] > 0:
-                buffer = -1
-            else:
-                buffer = 1
-            self.coords[axis] = collision_point[axis] + buffer
-
-    def move_without_collision_point(self):
-        self.last_coords = self.coords
-        self.coords = self.velocity + self.coords
-
-    def collide(self, list_of_walls):
-        anticipated_position = self.coords + self.velocity
-        collision_point = get_closest_collision_point(self.coords,
-                                                      anticipated_position,
-                                                      list_of_walls)
-        return collision_point
-
     def move(self, list_of_walls):
         self.recalculate_velocity()
-        collision_point = self.collide(list_of_walls)
-        if collision_point is not None:
-            self.move_up_to_collision_point(collision_point)
-        else:
-            self.move_without_collision_point()  
+        self.last_coords = self.coords
+        self.coords = self.velocity + self.coords  
