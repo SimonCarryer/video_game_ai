@@ -16,3 +16,10 @@ def test_circle_stops_when_moving_slowly_into_line():
     line = ObstructingLine((20.0, 0.0), (20.0, 30.0))
     circle.move([line])
     assert (circle.coords == [12.5, 10]).all()
+
+
+def test_circle_stops_when_moving_quickly_into_line():
+    circle = MovingCircle([10, 10], initial_velocity=[20, 0], radius=7.5)
+    line = ObstructingLine((20.0, 0.0), (20.0, 30.0))
+    circle.move([line])
+    assert (circle.coords == [12.5, 10]).all()
