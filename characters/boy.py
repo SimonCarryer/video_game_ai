@@ -9,7 +9,7 @@ class Boy():
         self.movement = MovingCircle(coords, initial_velocity=initial_velocity)
         self.brain = Brain()
 
-    def collide(self, movement_start, movement_end):
+    def collide(self, screen_object):
         return None
 
     def update(self, screen, list_of_walls):

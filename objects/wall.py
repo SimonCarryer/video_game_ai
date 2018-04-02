@@ -13,4 +13,4 @@ class Wall:
         self.sprite.draw(screen)
 
     def collide(self, colliding_object):
-        return self.substance.collide_with_circle(colliding_object)
+        return self.substance.collide(colliding_object)
