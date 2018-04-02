@@ -11,15 +11,15 @@ def magnitude_vector(vector):
     return np.linalg.norm(vector)
 
 
-def distance_to_target(current, target):
+def distance_between_points(current, target):
     return np.linalg.norm(target-current)
 
 
-def perpendicular_segment(line_segment_a) :
-    line_segment_b = np.empty_like(line_segment_a)
-    line_segment_b[0] = -line_segment_a[1]
-    line_segment_b[1] = line_segment_a[0]
-    return line_segment_b
+def perpendicular_vector(vector_a):
+    vector_b = np.empty_like(vector_a)
+    vector_b[0] = -vector_a[1]
+    vector_b[1] = vector_a[0]
+    return vector_b
 
 
 def find_intersecting_point(line_a_start,
@@ -29,7 +29,7 @@ def find_intersecting_point(line_a_start,
     da = line_a_end - line_a_start
     db = line_b_end - line_b_start
     dp = line_a_start - line_b_start
-    dap = perpendicular_segment(da)
+    dap = perpendicular_vector(da)
     denom = np.dot(dap, db)
     num = np.dot(dap, dp)
     return (num / denom.astype(float)) * db + line_b_start
@@ -78,3 +78,47 @@ def get_closest_collision_point(start, end, list_of_walls):
     else:
         closest_collision_point = None
     return closest_collision_point
+
+
+def point_inside_circle(circle_center, circle_radius, point):
+    distance = distance_between_points(circle_center, point)
+    return distance < circle_radius
+
+
+def closest_point_on_line(line_start, line_end, point):
+    dot_prod = dot(line_start, line_end, point)
+    closest_X = line_start[0] + (dot_prod * (line_end[0]-line_start[0]))
+    closest_Y = line_start[1] + (dot_prod * (line_end[1]-line_start[1]))
+    return np.array((closest_X, closest_Y))
+
+
+def dot(line_start, line_end, point):
+    line_length = distance_between_points(line_start, line_end)
+    a = ((point[0]-line_start[0])*(line_end[0]-line_start[0]))
+    b = ((point[1]-line_start[1])*(line_end[1]-line_start[1]))
+    return (a + b) / pow(line_length, 2)
+
+
+def check_if_point_is_on_line_segment(line_start, line_end, point):
+    buffer = 0.05
+    distance_to_start = distance_between_points(point, line_start)
+    distance_to_end = distance_between_points(point, line_end)
+    line_length = distance_between_points(line_start, line_end)
+    total_distance = distance_to_start + distance_to_end
+    return (total_distance - buffer) <= line_length <= (total_distance + buffer)
+
+
+def circle_line_collision(line_start, line_end, circle_center, circle_radius):
+    if point_inside_circle(circle_center, circle_radius, line_start):
+        return True
+    if point_inside_circle(circle_center, circle_radius, line_end):
+        return True
+    closest_point = closest_point_on_line(line_start, line_end, circle_center)
+    if distance_between_points(circle_center, closest_point) < circle_radius:
+        if check_if_point_is_on_line_segment(line_start, line_end, closest_point):
+            return True
+    return False
+
+
+    
+

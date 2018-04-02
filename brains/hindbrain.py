@@ -12,7 +12,7 @@ class Hindbrain:
         return normalise_vector(target_position - anticipated_position) * arrival_factor
 
     def arrive_factor(self, current_position, target_position):
-        current_distance_to_target = distance_to_target(current_position, 
+        current_distance_to_target = distance_between_points(current_position, 
                                                         target_position)
         if current_distance_to_target < self.arrive_distance:
             return current_distance_to_target/self.arrive_distance

@@ -75,10 +75,3 @@ def test_setting_goal_vector_applies_max_accelleration():
     goal_vector = np.array((1.0, 0.0))
     obj.set_accelleration(goal_vector)
     assert (obj.accelleration == np.array((3.0, 0.0))).all()
-
-
-def test_step_back_from_collision_point_reduces_velocity():
-    obj = Moving([100, 100], initial_velocity=[30, 0])
-    collision_point = np.array([120.0, 100.0])
-    obj.step_back_from_collision_point(collision_point)
-    assert (obj.velocity == [10.0, 0.0]).all()
