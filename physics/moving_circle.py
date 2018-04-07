@@ -13,6 +13,7 @@ class MovingCircle(Moving):
                         initial_location, 
                         initial_velocity=initial_velocity)
         self.radius = radius
+        self.collide_type = 'circle'
 
     def get_collision_points(self, list_of_screen_objects):
         collision_points = []

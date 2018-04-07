@@ -123,3 +123,10 @@ def circle_line_collision(line_start, line_end, circle_center, circle_radius):
         return line_end
     return None
 
+
+def line_normal(line_start, line_end):
+    dx = line_end[0] - line_start[1]
+    dy = line_end[1] - line_start[0]
+    normal_start = np.array((-dy, dx))
+    normal_end = np.array((dy, -dx))
+    return normal_start, normal_end
