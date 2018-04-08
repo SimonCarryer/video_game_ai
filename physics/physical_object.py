@@ -4,8 +4,8 @@ from util.helpers import *
 
 class ObstructingLine:
     def __init__(self, start, end):
-        self.start = np.array(start)
-        self.end = np.array(end)
+        self.start = np.array(start).astype(float)
+        self.end = np.array(end).astype(float)
         self.normal_start, self.normal_end = line_normal(self.start, self.end)
         self.center = center_of_line(self.start, self.end)
         self.collide_type = None
@@ -44,4 +44,4 @@ class ObstructingLine:
             return None
 
     def avoid_vector(self, collision_point):
-        return normalise_vector(self.center - collision_point)
+        return normalise_vector(collision_point - self.center)

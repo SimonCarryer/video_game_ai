@@ -1,13 +1,15 @@
 import numpy as np
 from .constants import *
 from util.helpers import *
+from colliding_object import Colliding
 
 
-class Moving:
+class Moving(Colliding):
     def __init__(self, 
                  initial_location, 
                  initial_velocity=[0, 0]):
         self.coords = np.array([float(i) for i in initial_location])
+        super(Moving, self).__init__(self.coords)
         self.velocity = np.array([float(i) for i in initial_velocity])
         self.last_coords = self.coords - self.velocity
         self.max_accelleration = 3
