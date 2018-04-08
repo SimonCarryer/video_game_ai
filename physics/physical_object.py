@@ -7,6 +7,7 @@ class ObstructingLine:
         self.start = np.array(start)
         self.end = np.array(end)
         self.normal_start, self.normal_end = line_normal(self.start, self.end)
+        self.center = center_of_line(self.start, self.end)
         self.collide_type = None
 
     def collide(self, colliding_object):
@@ -20,21 +21,27 @@ class ObstructingLine:
             return None
 
     def collide_with_circle(self, circle_coords, circle_radius):
-        return circle_line_collision(self.start, 
-                                     self.end, 
-                                     circle_coords,
-                                     circle_radius)
+        intersection = circle_line_collision(self.start, 
+                                             self.end, 
+                                             circle_coords,
+                                             circle_radius)
+        if intersection is not None:
+            avoid = self.avoid_vector(circle_coords)
+            return {'intersection': intersection,
+                    'avoid': avoid
+                    }
+        else:
+            return None
 
     def collide_with_line(self, line_start, line_end):
         if check_for_line_intersection(self.start, self.end, line_start, line_end):
             intersection = find_intersecting_point(self.start, self.end, line_start, line_end)
-            avoid_angle = self.avoid_angle(line_start)
+            avoid = self.avoid_vector(intersection)
             return {'intersection': intersection,
-                    'avoid_angle': avoid_angle
-            }
+                    'avoid': avoid
+                    }
         else:
             return None
 
-    def avoid_angle(self, point):
-        closest = find_closest_point(point, [self.normal_start, self.normal_end])
-        return normalise_vector(closest)
+    def avoid_vector(self, collision_point):
+        return normalise_vector(self.center - collision_point)

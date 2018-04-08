@@ -61,6 +61,15 @@ def find_closest_point(origin, list_of_points):
     return list_of_points[closest_index]
 
 
+def find_closest_point_index(origin, list_of_points):
+    if len(list_of_points) == 1:
+        closest_index = 0
+    else:
+        origin = origin.reshape(1, -1)
+        closest_index = euclidean_distances(origin, list_of_points).argmin()
+    return closest_index
+
+
 def check_for_collisions(start, end, list_of_walls):
     collision_points = []
     for wall in list_of_walls:
@@ -130,3 +139,7 @@ def line_normal(line_start, line_end):
     normal_start = np.array((-dy, dx))
     normal_end = np.array((dy, -dx))
     return normal_start, normal_end
+
+
+def center_of_line(line_start, line_end):
+    return (line_start + line_end) / 2
