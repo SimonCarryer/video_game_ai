@@ -14,7 +14,7 @@ class EyeBeam(Colliding):
 
 class Eyes:
     def __init__(self):
-        self.look_ahead = 100
+        self.look_ahead = 10
 
     def get_mouse_position(self):
         return np.array(pygame.mouse.get_pos()).astype(float)
@@ -23,6 +23,3 @@ class Eyes:
         ahead_end = coords + (vector * self.look_ahead)
         ahead = EyeBeam(coords, ahead_end)
         return ahead.get_closest_collision(list_of_game_objects)
-
-
-
