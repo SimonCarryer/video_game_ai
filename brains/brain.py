@@ -2,10 +2,16 @@ from hindbrain import Hindbrain
 from eyes import Eyes
 
 
+class SelfImage:
+    def __init__(self, body_size):
+        self.body_size = body_size
+
+
 class Brain:
-    def __init__(self):
+    def __init__(self, body_size):
         self.hindbrain = Hindbrain()
         self.eyes = Eyes()
+        self.self_image = SelfImage(body_size)
 
     def follow_mouse_pointer(self,
                              current_position,
@@ -14,6 +20,7 @@ class Brain:
         mouse_position = self.eyes.get_mouse_position()
         collision = self.eyes.look_for_collisions(current_position,
                                                   current_velocity,
+                                                  self.self_image.body_size,
                                                   list_of_game_objects)
         vector = self.hindbrain.calculate_vector_to_target(current_position,
                                                            current_velocity,

@@ -2,10 +2,10 @@ import pygame
 
 
 class Visible(pygame.sprite.Sprite):
-    def __init__(self, coords, size, colour=(220, 0, 0)):
+    def __init__(self, coords, radius, colour=(220, 0, 0)):
         super(Visible, self).__init__()
         self.colour = colour
-        self.rect = pygame.Rect(*((0, 0) + size))
+        self.rect = pygame.Rect(*((0, 0) + (2 * radius, 2 * radius)))
         self.change_rect_center(coords)
 
     def change_rect_center(self, coords):

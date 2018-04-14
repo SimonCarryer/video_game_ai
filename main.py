@@ -12,7 +12,7 @@ bestdepth = pygame.display.mode_ok(SCREENRECT.size, winstyle, 32)
 screen = pygame.display.set_mode((640, 640), winstyle, bestdepth)
 
 arena = Arena(SCREENRECT)
-boy = Boy((100, 100), (20, 0))
+boy = Boy((100, 100), 7.5, (20, 0))
 wall = Wall((200, 200), (300, 200))
 
 arena.add_screen_objects([boy, wall])

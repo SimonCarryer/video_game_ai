@@ -4,10 +4,10 @@ from brains.brain import Brain
 
 
 class Boy():
-    def __init__(self, coords, initial_velocity):
-        self.sprite = Visible(coords, (15, 15), colour=(220, 0, 0))
+    def __init__(self, coords, radius, initial_velocity):
+        self.sprite = Visible(coords, radius, colour=(220, 0, 0))
         self.movement = MovingCircle(coords, initial_velocity=initial_velocity)
-        self.brain = Brain()
+        self.brain = Brain(radius)
 
     def collide(self, screen_object):
         return None

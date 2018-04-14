@@ -16,7 +16,7 @@ def distance_between_points(current, target):
 
 
 def perpendicular_vector(vector_a):
-    vector_b = np.empty_like(vector_a)
+    vector_b = np.empty_like(vector_a).astype(float)
     vector_b[0] = -vector_a[1]
     vector_b[1] = vector_a[0]
     return vector_b

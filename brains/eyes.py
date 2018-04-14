@@ -19,7 +19,14 @@ class Eyes:
     def get_mouse_position(self):
         return np.array(pygame.mouse.get_pos()).astype(float)
 
-    def look_for_collisions(self, coords, vector, list_of_game_objects):
-        ahead_end = coords + (vector * self.look_ahead)
-        ahead = EyeBeam(coords, ahead_end)
-        return ahead.get_closest_collision(list_of_game_objects)
+    def look_for_collisions(self, coords, vector, radius, list_of_game_objects):
+        for sign in [1.0, -1.0]:
+            adjustment = normalise_vector(perpendicular_vector(vector)) * (sign * radius)
+            adjusted_coords = coords + adjustment
+            ahead_end = adjusted_coords + (vector * self.look_ahead)
+            ahead = EyeBeam(adjusted_coords, ahead_end)
+            collision = ahead.get_closest_collision(list_of_game_objects)
+            if collision is not None:
+                return collision
+        return None
+        

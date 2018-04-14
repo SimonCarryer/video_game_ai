@@ -52,5 +52,3 @@ def test_calculate_vector_to_target_ignores_collisions_behind_target():
                                                      collision=collision)
     desired = np.array((1.0, 0.0))
     assert (vector == desired).all()
-
-
