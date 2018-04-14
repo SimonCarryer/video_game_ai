@@ -142,3 +142,11 @@ def test_line_normal_returns_perpendicular_line():
     normal = line_normal(vertical_line[0], vertical_line[1])
     assert (normal[0] == [(-0.0, 2.0)]).all()
     assert (normal[1] == [(0.0, -2.0)]).all()
+
+
+def test_random_vector():
+    randoms = [random_vector() for _ in range(2000)]
+    assert 0.9 <= max([a for a, b in randoms]) <= 1
+    assert -1 <= min([a for a, b in randoms]) <= -0.9
+    assert 1.4 <= max([a + b for a, b in randoms]) <= 1.42
+    assert -1.42 <= min([a + b for a, b in randoms]) <= -1.4

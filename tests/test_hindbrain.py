@@ -31,24 +31,20 @@ def test_calculate_vector_to_target_adds_avoid_vector():
     velocity = np.array((0.0, 0.0))
     collision = {'avoid': np.array((0.0, 1.0)),
                  'intersection': np.array((11.0, 10.0))}
-    vector = lizard_brain.calculate_vector_to_target(current,
-                                                     velocity,
-                                                     target,
-                                                     collision=collision)
+    vector = np.array((1.0, 0.0))
+    vector = lizard_brain.avoid(current, vector, collision, target_position=target)
     desired = normalise_vector(np.array((1.0, 1.0)))
     assert (vector == desired).all()
 
 
-def test_calculate_vector_to_target_ignores_collisions_behind_target():
+def test_calculate_avoid_ignores_collisions_behind_target():
     lizard_brain = Hindbrain()
     current = np.array((10.0, 10.0))
     target = np.array((20.0, 10.0))
     velocity = np.array((0.0, 0.0))
     collision = {'avoid': np.array((0.0, 1.0)),
                  'intersection': np.array((21.0, 10.0))}
-    vector = lizard_brain.calculate_vector_to_target(current,
-                                                     velocity,
-                                                     target,
-                                                     collision=collision)
+    vector = np.array((1.0, 0.0))
+    vector = lizard_brain.avoid(current, vector, collision, target_position=target)
     desired = np.array((1.0, 0.0))
     assert (vector == desired).all()

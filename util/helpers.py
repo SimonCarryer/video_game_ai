@@ -1,4 +1,5 @@
 import numpy as np
+import random
 from sklearn.preprocessing import normalize
 from sklearn.metrics.pairwise import euclidean_distances
 
@@ -143,3 +144,10 @@ def line_normal(line_start, line_end):
 
 def center_of_line(line_start, line_end):
     return (line_start + line_end) / 2
+
+
+def random_vector():
+    vector = np.empty(2)
+    vector[0] = random.uniform(-1, 1)
+    vector[1] = random.uniform(-1, 1)
+    return normalise_vector(vector)
