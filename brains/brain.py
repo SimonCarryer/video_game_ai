@@ -1,6 +1,8 @@
 from hindbrain import Hindbrain
 from util.helpers import *
 from eyes import Eyes
+from numpy.random import normal
+import random
 
 
 class SelfImage:
@@ -13,6 +15,7 @@ class Brain:
         self.hindbrain = Hindbrain()
         self.eyes = Eyes()
         self.self_image = SelfImage(body_size)
+        self.wander_value = 0
 
     def wander(self,
                current_position,
@@ -22,10 +25,19 @@ class Brain:
                                                   current_velocity,
                                                   self.self_image.body_size,
                                                   list_of_game_objects)
-        vector = normalise_vector(current_velocity + (random_vector()*8))
-        return self.hindbrain.avoid(current_position,
-                                    vector,
-                                    collision) 
+        if collision is not None:
+            vector = self.hindbrain.calculate_vector_to_target(current_position,
+                                                           current_velocity,
+                                                           collision['intersection'])
+            return -vector
+        change_chance = 0.07
+        turn_force = 0.7
+        if random.uniform(0, 1) < change_chance:
+            self.wander_value = random.choice([-2, -1, 0, 0, 1, 2]) * turn_force
+        wander_force = (normalise_vector(perpendicular_vector(current_velocity))
+                        ) * self.wander_value
+        vector = normalise_vector(current_velocity + wander_force)
+        return vector/4
 
     def follow_mouse_pointer(self,
                              current_position,
@@ -50,5 +62,5 @@ class Brain:
                         current_velocity,
                         list_of_game_objects):
         return self.wander(current_position,
-                                         current_velocity,
-                                         list_of_game_objects)
+                           current_velocity,
+                           list_of_game_objects)
