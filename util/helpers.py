@@ -151,3 +151,16 @@ def random_vector():
     vector[0] = random.uniform(-1, 1)
     vector[1] = random.uniform(-1, 1)
     return normalise_vector(vector)
+
+
+def circle_circle_collision(colliding_circle_coords, 
+                            colliding_circle_radius,
+                            collided_circle_coords,
+                            collided_circle_radius):
+    distance = distance_between_points(colliding_circle_coords, collided_circle_coords)
+    if distance < colliding_circle_radius + collided_circle_radius:
+        vector_between_circles = normalise_vector(colliding_circle_coords - collided_circle_coords)
+        return collided_circle_coords + vector_between_circles * collided_circle_radius
+    else:
+        return None
+

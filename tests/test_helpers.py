@@ -150,3 +150,15 @@ def test_random_vector():
     assert -1 <= min([a for a, b in randoms]) <= -0.9
     assert 1.4 <= max([a + b for a, b in randoms]) <= 1.42
     assert -1.42 <= min([a + b for a, b in randoms]) <= -1.4
+
+
+def test_circle_circle_collision():
+    circle_one_center = np.array((4.0, 4.0))
+    circle_one_radius = 1
+    circle_two_center = np.array((2.5, 4.0))
+    circle_two_radius = 1
+    intersection = circle_circle_collision(circle_one_center,
+                                           circle_one_radius,
+                                           circle_two_center,
+                                           circle_two_radius)
+    assert (intersection == [3.5, 4.0]).all()
