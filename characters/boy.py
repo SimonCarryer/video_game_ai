@@ -2,14 +2,23 @@ from drawing.visible import Visible
 from physics.moving_circle import MovingCircle
 from physics.physical_object import ObstructingCircle
 from brains.brain import Brain
+from characters.boy_recipes import boy_recipes
 
 
 class Boy():
-    def __init__(self, coords, radius, initial_velocity):
-        self.sprite = Visible(coords, radius, colour=(220, 0, 0))
-        self.movement = MovingCircle(coords, initial_velocity=initial_velocity)
-        self.substance = ObstructingCircle(coords, radius)
-        self.brain = Brain(radius, self.movement.name)
+    def __init__(self, coords, initial_velocity, recipe):
+        recipe = boy_recipes[recipe]
+        self.sprite = Visible(coords,
+                              recipe['radius'],
+                              colour=recipe['colour'])
+        self.movement = MovingCircle(coords, 
+                                     max_accelleration=recipe['accelleration'],
+                                     initial_velocity=initial_velocity)
+        self.substance = ObstructingCircle(coords,
+                                           recipe['radius'])
+        self.brain = Brain(recipe['radius'],
+                           self.movement.name,
+                           recipe['behaviour'])
 
     def collide(self, screen_object):
         if self.movement.name == screen_object.name:

@@ -12,9 +12,11 @@ bestdepth = pygame.display.mode_ok(SCREENRECT.size, winstyle, 32)
 screen = pygame.display.set_mode((640, 640), winstyle, bestdepth)
 
 arena = Arena(SCREENRECT)
-boy = Boy((100, 100), 7.5, (20, 0))
-other_boy = Boy((200, 100), 7.5, (-20, 0))
-big_boy = Boy((500, 400), 20, (-20, 0))
+boy = Boy((100, 100), (20, 0), 'tootling boy')
+other_boy = Boy((200, 100), (-20, 0), 'tootling boy')
+
+hungry_boy = Boy((200, 400), (20, 0), 'hungry boy')
+
 wall = Wall((200, 200), (300, 200))
 bound1 = Boundary((0, 0), (640, 0))
 bound2 = Boundary((640, 0), (640, 640))
@@ -22,7 +24,7 @@ bound3 = Boundary((640, 640), (0, 640))
 bound4 = Boundary((0, 640), (0, 0))
 
 
-arena.add_screen_objects([boy, other_boy, big_boy, wall, bound1, bound2, bound3, bound4])
+arena.add_screen_objects([boy, other_boy, hungry_boy, wall, bound1, bound2, bound3, bound4])
 
 
 def main(screen, arena):

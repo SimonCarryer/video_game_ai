@@ -8,9 +8,11 @@ class MovingCircle(Moving):
     def __init__(self,
                  initial_location, 
                  initial_velocity=[0, 0],
+                 max_accelleration=3,
                  radius=7.5):
         Moving.__init__(self,
-                        initial_location, 
+                        initial_location,
+                        max_accelleration=max_accelleration,
                         initial_velocity=initial_velocity)
         self.radius = radius
         self.collide_type = 'circle'

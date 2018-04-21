@@ -21,7 +21,7 @@ class Eyes:
         return np.array(pygame.mouse.get_pos()).astype(float)
 
     def look_for_collisions(self, coords, vector, radius, name, list_of_game_objects):
-        for sign in [1.0, -1.0]:
+        for sign in [1.0, 0, -1.0]:
             adjustment = normalise_vector(perpendicular_vector(vector)) * (sign * radius)
             adjusted_coords = coords + adjustment
             ahead_end = adjusted_coords + (vector * self.look_ahead)

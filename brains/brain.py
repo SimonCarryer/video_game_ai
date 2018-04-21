@@ -12,11 +12,16 @@ class SelfImage:
 
 
 class Brain:
-    def __init__(self, body_size, name):
+    def __init__(self, body_size, name, behaviour):
         self.hindbrain = Hindbrain()
         self.eyes = Eyes()
         self.self_image = SelfImage(body_size, name)
         self.wander_value = 0
+        behaviour_dict = {
+            'wander': self.wander,
+            'follow mouse pointer': self.follow_mouse_pointer
+        }
+        self.get_goal_vector = behaviour_dict[behaviour]
 
     def wander(self,
                current_position,
@@ -39,7 +44,7 @@ class Brain:
         wander_force = (normalise_vector(perpendicular_vector(current_velocity))
                         ) * self.wander_value
         vector = normalise_vector(current_velocity + wander_force)
-        return vector/4
+        return vector
 
     def follow_mouse_pointer(self,
                              current_position,
@@ -59,11 +64,3 @@ class Brain:
                                     collision,
                                     target_position=mouse_position
                                     )
-
-    def get_goal_vector(self, 
-                        current_position,
-                        current_velocity,
-                        list_of_game_objects):
-        return self.wander(current_position,
-                           current_velocity,
-                           list_of_game_objects)

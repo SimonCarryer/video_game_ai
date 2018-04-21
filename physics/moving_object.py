@@ -6,13 +6,14 @@ from colliding_object import Colliding
 
 class Moving(Colliding):
     def __init__(self, 
-                 initial_location, 
+                 initial_location,
+                 max_accelleration=3,
                  initial_velocity=[0, 0]):
         self.coords = np.array(initial_location).astype(float)
         super(Moving, self).__init__(self.coords)
         self.velocity = np.array(initial_velocity).astype(float)
         self.last_coords = self.coords - self.velocity
-        self.max_accelleration = 3
+        self.max_accelleration = max_accelleration
         self.accelleration = np.array([0.0, 0.0])
 
     def apply_friction(self, velocity):
