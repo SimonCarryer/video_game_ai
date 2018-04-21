@@ -5,23 +5,17 @@ from numpy.random import normal
 import random
 
 
-class SelfImage:
-    def __init__(self, body_size, name):
-        self.body_size = body_size
-        self.name = name
-
-
 class Brain:
-    def __init__(self, body_size, name, behaviour):
+    def __init__(self, self_image):
         self.hindbrain = Hindbrain()
         self.eyes = Eyes()
-        self.self_image = SelfImage(body_size, name)
+        self.self_image = self_image
         self.wander_value = 0
         behaviour_dict = {
             'wander': self.wander,
             'follow mouse pointer': self.follow_mouse_pointer
         }
-        self.get_goal_vector = behaviour_dict[behaviour]
+        self.get_goal_vector = behaviour_dict[self_image.behaviour]
 
     def wander(self,
                current_position,
@@ -29,7 +23,7 @@ class Brain:
                list_of_game_objects):
         collision = self.eyes.look_for_collisions(current_position,
                                                   current_velocity,
-                                                  self.self_image.body_size,
+                                                  self.self_image.radius,
                                                   self.self_image.name,
                                                   list_of_game_objects)
         if collision is not None:
@@ -53,7 +47,7 @@ class Brain:
         mouse_position = self.eyes.get_mouse_position()
         collision = self.eyes.look_for_collisions(current_position,
                                                   current_velocity,
-                                                  self.self_image.body_size,
+                                                  self.self_image.radius,
                                                   self.self_image.name,
                                                   list_of_game_objects)
         vector = self.hindbrain.calculate_vector_to_target(current_position,

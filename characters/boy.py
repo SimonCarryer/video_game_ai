@@ -5,20 +5,28 @@ from brains.brain import Brain
 from characters.boy_recipes import boy_recipes
 
 
+class SelfImage:
+    def __init__(self,
+                 boy_type):
+        recipe = boy_recipes[boy_type]
+        self.type = boy_type
+        for key in recipe:
+            setattr(self, key, recipe[key])
+
+
 class Boy():
-    def __init__(self, coords, initial_velocity, recipe):
-        recipe = boy_recipes[recipe]
+    def __init__(self, coords, initial_velocity, boy_type):
+        image = SelfImage(boy_type)
         self.sprite = Visible(coords,
-                              recipe['radius'],
-                              colour=recipe['colour'])
-        self.movement = MovingCircle(coords, 
-                                     max_accelleration=recipe['accelleration'],
+                              image.radius,
+                              colour=image.colour)
+        self.movement = MovingCircle(coords,
+                                     max_accelleration=image.accelleration,
                                      initial_velocity=initial_velocity)
         self.substance = ObstructingCircle(coords,
-                                           recipe['radius'])
-        self.brain = Brain(recipe['radius'],
-                           self.movement.name,
-                           recipe['behaviour'])
+                                           image.radius)
+        image.name = self.movement.name
+        self.brain = Brain(image)
 
     def collide(self, screen_object):
         if self.movement.name == screen_object.name:
