@@ -6,15 +6,16 @@ import random
 
 
 class SelfImage:
-    def __init__(self, body_size):
+    def __init__(self, body_size, name):
         self.body_size = body_size
+        self.name = name
 
 
 class Brain:
-    def __init__(self, body_size):
+    def __init__(self, body_size, name):
         self.hindbrain = Hindbrain()
         self.eyes = Eyes()
-        self.self_image = SelfImage(body_size)
+        self.self_image = SelfImage(body_size, name)
         self.wander_value = 0
 
     def wander(self,
@@ -24,6 +25,7 @@ class Brain:
         collision = self.eyes.look_for_collisions(current_position,
                                                   current_velocity,
                                                   self.self_image.body_size,
+                                                  self.self_image.name,
                                                   list_of_game_objects)
         if collision is not None:
             vector = self.hindbrain.calculate_vector_to_target(current_position,
@@ -47,6 +49,7 @@ class Brain:
         collision = self.eyes.look_for_collisions(current_position,
                                                   current_velocity,
                                                   self.self_image.body_size,
+                                                  self.self_image.name,
                                                   list_of_game_objects)
         vector = self.hindbrain.calculate_vector_to_target(current_position,
                                                            current_velocity,
