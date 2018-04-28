@@ -1,4 +1,4 @@
-from characters.boy import Boy
+from screen_objects.boy import Boy
 
 
 def test_boy_is_created_with_correct_attributes():
@@ -11,4 +11,4 @@ def test_boy_is_cooked_from_recipe():
     assert boy.substance.radius == 7.5
     assert boy.brain.get_goal_vector.__name__ == 'wander'
     assert boy.sprite.colour == (0, 0, 220)
-    assert boy.movement.max_accelleration == 1
+    assert boy.movement.max_accelleration == 2

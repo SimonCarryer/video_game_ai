@@ -12,6 +12,24 @@ def test_circle_line_collision():
     assert (collision_point == [4.0, 3.0]).all()
 
 
+def test_circle_line_collision_again():
+    circle_center = np.array((2.0, 2.0))
+    circle_radius = 1.0
+    circle = ObstructingCircle(circle_center, circle_radius)
+    line = MockCollidingLine(np.array((0.0, 2.0)), np.array((1.5, 2.0)))
+    collision_point = circle.collide(line)['intersection']
+    assert (collision_point == [1.5, 2.0]).all()
+
+
+def test_circle_line_collision_again_again():
+    circle_center = np.array((2.0, 2.0))
+    circle_radius = 1.0
+    circle = ObstructingCircle(circle_center, circle_radius)
+    line = MockCollidingLine(np.array((4.0, 2.0)), np.array((2.0, 2.0)))
+    collision_point = circle.collide(line)['intersection']
+    assert (collision_point == [2.0, 2.0]).all()
+
+
 def test_circle_circle_collision():
     circle_one_center = np.array((4.0, 4.0))
     circle_one_radius = 1

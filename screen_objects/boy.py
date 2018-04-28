@@ -2,37 +2,32 @@ from drawing.visible import Visible
 from physics.moving_circle import MovingCircle
 from physics.physical_object import ObstructingCircle
 from brains.brain import Brain
-from characters.boy_recipes import boy_recipes
-
-
-class SelfImage:
-    def __init__(self,
-                 boy_type):
-        recipe = boy_recipes[boy_type]
-        self.type = boy_type
-        for key in recipe:
-            setattr(self, key, recipe[key])
+from screen_objects.boy_recipes import boy_cookbook
 
 
 class Boy():
     def __init__(self, coords, initial_velocity, boy_type):
-        image = SelfImage(boy_type)
+        recipe = boy_cookbook.get_recipe(boy_type)
         self.sprite = Visible(coords,
-                              image.radius,
-                              colour=image.colour)
+                              recipe['radius'],
+                              colour=recipe['colour'])
         self.movement = MovingCircle(coords,
-                                     max_accelleration=image.accelleration,
+                                     max_accelleration=recipe['accelleration'],
                                      initial_velocity=initial_velocity)
+        recipe['name'] = self.movement.name
         self.substance = ObstructingCircle(coords,
-                                           image.radius)
-        image.name = self.movement.name
-        self.brain = Brain(image)
+                                           recipe['radius'],
+                                           image=recipe)
+        self.brain = Brain(recipe)
 
     def collide(self, screen_object):
         if self.movement.name == screen_object.name:
             return None
         else:
             return self.substance.collide(screen_object)
+
+    def coords(self):
+        return self.substance.center
 
     def move(self, list_of_game_objects):
         goal_vector = self.brain.get_goal_vector(self.movement.coords, 

@@ -42,6 +42,17 @@ def counterclockwise_points(point_a, point_b, point_c):
     return a > b
 
 
+def points_on_line(line_a_start,
+                   line_a_end,
+                   line_b_start,
+                   line_b_end):
+    a = check_if_point_is_on_line_segment(line_a_start, line_a_end, line_b_start)
+    b = check_if_point_is_on_line_segment(line_a_start, line_a_end, line_b_end)
+    c = check_if_point_is_on_line_segment(line_b_start, line_b_start, line_a_start)
+    d = check_if_point_is_on_line_segment(line_b_start, line_b_start, line_a_end)
+    return a or b or c or d
+
+
 def check_for_line_intersection(line_a_start,
                                 line_a_end,
                                 line_b_start,
@@ -50,7 +61,10 @@ def check_for_line_intersection(line_a_start,
     b = counterclockwise_points(line_a_end, line_b_start, line_b_end)
     c = counterclockwise_points(line_a_start, line_a_end, line_b_start)
     d = counterclockwise_points(line_a_start, line_a_end, line_b_end)
-    return a != b and c != d
+    return (a != b and c != d) or points_on_line(line_a_start,
+                                                 line_a_end,
+                                                 line_b_start,
+                                                 line_b_end)
 
 
 def find_closest_point(origin, list_of_points):
@@ -109,7 +123,11 @@ def dot(line_start, line_end, point):
     line_length = distance_between_points(line_start, line_end)
     a = ((point[0]-line_start[0])*(line_end[0]-line_start[0]))
     b = ((point[1]-line_start[1])*(line_end[1]-line_start[1]))
-    return (a + b) / pow(line_length, 2)
+    squared_length = pow(line_length, 2)
+    if squared_length > 0:
+        return (a + b) / squared_length
+    else:
+        return np.array((0.0, 0.0))
 
 
 def check_if_point_is_on_line_segment(line_start, line_end, point):

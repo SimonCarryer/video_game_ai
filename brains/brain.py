@@ -13,9 +13,52 @@ class Brain:
         self.wander_value = 0
         behaviour_dict = {
             'wander': self.wander,
-            'follow mouse pointer': self.follow_mouse_pointer
+            'follow mouse pointer': self.follow_mouse_pointer,
+            'follow closest boy': self.follow_closest_boy,
+            'run from close boys': self.run_from_close_boys
         }
-        self.get_goal_vector = behaviour_dict[self_image.behaviour]
+        self.get_goal_vector = behaviour_dict[self_image['behaviour']]
+
+    def follow_closest_boy(self,
+                           current_position,
+                           current_velocity,
+                           list_of_screen_objects):
+        visibles = self.eyes.visible_objects(current_position,
+                                             self.self_image['name'],
+                                             list_of_screen_objects)
+        boy_locations = [visible['intersection'] for visible in visibles if visible.get('image')]
+        if len(boy_locations) == 0:
+            return self.wander(current_position,
+                               current_velocity,
+                               list_of_screen_objects)
+        goal = find_closest_point(current_position, boy_locations)
+        vector = self.hindbrain.calculate_vector_to_target(current_position,
+                                                           current_velocity,
+                                                           goal)
+        return vector
+
+    def run_from_close_boys(self,
+                            current_position,
+                            current_velocity,
+                            list_of_screen_objects):
+        visibles = self.eyes.visible_objects(current_position,
+                                             self.self_image['name'],
+                                             list_of_screen_objects)
+        boy_locations = [visible['intersection'] for visible in visibles if visible.get('image')]
+        if len(boy_locations) == 0:
+            return self.wander(current_position,
+                               current_velocity,
+                               list_of_screen_objects)
+        closest_boy = find_closest_point(current_position, boy_locations)
+        distance_to_boy = distance_between_points(current_position, closest_boy)
+        if distance_to_boy > 200:
+            return self.wander(current_position,
+                               current_velocity,
+                               list_of_screen_objects)
+        vector = -self.hindbrain.calculate_vector_to_target(current_position,
+                                                            current_velocity,
+                                                            closest_boy)
+        return vector
 
     def wander(self,
                current_position,
@@ -23,8 +66,8 @@ class Brain:
                list_of_game_objects):
         collision = self.eyes.look_for_collisions(current_position,
                                                   current_velocity,
-                                                  self.self_image.radius,
-                                                  self.self_image.name,
+                                                  self.self_image['radius'],
+                                                  self.self_image['name'],
                                                   list_of_game_objects)
         if collision is not None:
             vector = self.hindbrain.calculate_vector_to_target(current_position,
@@ -47,8 +90,8 @@ class Brain:
         mouse_position = self.eyes.get_mouse_position()
         collision = self.eyes.look_for_collisions(current_position,
                                                   current_velocity,
-                                                  self.self_image.radius,
-                                                  self.self_image.name,
+                                                  self.self_image['radius'],
+                                                  self.self_image['name'],
                                                   list_of_game_objects)
         vector = self.hindbrain.calculate_vector_to_target(current_position,
                                                            current_velocity,

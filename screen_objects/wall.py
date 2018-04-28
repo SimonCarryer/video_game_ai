@@ -12,6 +12,9 @@ class Wall:
     def update(self, screen, list_of_walls):
         self.sprite.draw(screen)
 
+    def coords(self):
+        return self.substance.center
+
     def collide(self, colliding_object):
         return self.substance.collide(colliding_object)
 
@@ -21,6 +24,9 @@ class Boundary:
         self.substance = ObstructingLine(start, end)
         self.start = start
         self.end = end
+
+    def coords(self):
+        return self.substance.center
 
     def update(self, screen, list_of_walls):
         pass

@@ -3,28 +3,32 @@ from util.helpers import *
 
 
 class Obstructing(object):
-        def collide(self, colliding_object):
-            if colliding_object.collide_type == 'circle':
-                return self.collide_with_circle(colliding_object.coords,
-                                                colliding_object.radius)
-            elif colliding_object.collide_type == 'line':
-                return self.collide_with_line(colliding_object.start,
-                                              colliding_object.end)
-            else:
-                return None
+    def __init__(self, image={}):
+        self.image = image
 
-        def avoid_vector(self, collision_point):
-            return normalise_vector(collision_point - self.center)
+    def collide(self, colliding_object):
+        if colliding_object.collide_type == 'circle':
+            return self.collide_with_circle(colliding_object.coords,
+                                            colliding_object.radius)
+        elif colliding_object.collide_type == 'line':
+            return self.collide_with_line(colliding_object.start,
+                                            colliding_object.end)
+        else:
+            return None
 
-        def collision(self, intersection, avoid):
-            return {'intersection': intersection,
-                    'avoid': avoid,
-                    'name': 'abc'
-                    }
+    def avoid_vector(self, collision_point):
+        return normalise_vector(collision_point - self.center)
+
+    def collision(self, intersection, avoid):
+        return {'intersection': intersection,
+                'avoid': avoid,
+                'image': self.image
+                }
 
 
 class ObstructingLine(Obstructing):
-    def __init__(self, start, end):
+    def __init__(self, start, end, image=None):
+        super(ObstructingLine, self).__init__(image)
         self.start = np.array(start).astype(float)
         self.end = np.array(end).astype(float)
         self.normal_start, self.normal_end = line_normal(self.start, self.end)
@@ -52,9 +56,11 @@ class ObstructingLine(Obstructing):
 
 
 class ObstructingCircle(Obstructing):
-    def __init__(self, coords, radius):
+    def __init__(self, coords, radius, image=None):
+        super(ObstructingCircle, self).__init__(image)
         self.radius = radius
         self.center = coords
+        self.image = image
 
     def collide_with_line(self, line_start, line_end):
         intersection = circle_line_collision(line_start, 
@@ -63,9 +69,7 @@ class ObstructingCircle(Obstructing):
                                              self.radius)
         if intersection is not None:
             avoid = self.avoid_vector(intersection)
-            return {'intersection': intersection,
-                    'avoid': avoid
-                    }
+            return self.collision(intersection, avoid)
         else:
             return None
 
@@ -76,9 +80,7 @@ class ObstructingCircle(Obstructing):
                                                self.radius)
         if intersection is not None:
             avoid = self.avoid_vector(intersection)
-            return {'intersection': intersection,
-                    'avoid': avoid
-                    }
+            return self.collision(intersection, avoid)
         else:
             return None
 
