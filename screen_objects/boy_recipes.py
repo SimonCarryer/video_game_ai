@@ -6,7 +6,7 @@ boy_recipes['tootling boy'] = {
     'kind': 'tootling boy',
     'radius': 7.5,
     'colour': (0, 0, 220),
-    'behaviour': 'wander',
+    'behaviour': {},
     'accelleration': 2
 }
 
@@ -14,7 +14,7 @@ boy_recipes['hungry boy'] = {
     'kind': 'hungry boy',
     'radius': 8,
     'colour': (220, 0, 0),
-    'behaviour': 'follow mouse pointer',
+    'behaviour': {'target': 'mouse pointer', 'target behaviour': 'seek'},
     'accelleration': 4
 }
 
@@ -22,7 +22,7 @@ boy_recipes['friendly boy'] = {
     'kind': 'friendly boy',
     'radius': 7.5,
     'colour': (100, 100, 0),
-    'behaviour': 'follow closest boy',
+    'behaviour': {'target': {'kind': 'hungry boy'}, 'target range': 300, 'target behaviour': 'seek'},
     'accelleration': 1
 }
 
@@ -30,7 +30,7 @@ boy_recipes['scaredy boy'] = {
     'kind': 'scaredy boy',
     'radius': 7.5,
     'colour': (0, 100, 100),
-    'behaviour': 'run from close boys',
+    'behaviour': {},
     'accelleration': 1.5
 }
 

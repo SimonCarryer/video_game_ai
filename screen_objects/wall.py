@@ -8,6 +8,7 @@ class Wall:
         self.substance = ObstructingLine(start, end)
         self.start = start
         self.end = end
+        self.image = {}
 
     def update(self, screen, list_of_walls):
         self.sprite.draw(screen)
@@ -24,6 +25,7 @@ class Boundary:
         self.substance = ObstructingLine(start, end)
         self.start = start
         self.end = end
+        self.image = {}
 
     def coords(self):
         return self.substance.center

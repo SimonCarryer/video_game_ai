@@ -16,9 +16,9 @@ class Hindbrain:
             if target_position is not None and find_closest_point_index(current_position, 
                                         [collision['intersection'],
                                             target_position]) == 0:
-                vector = normalise_vector(vector + collision['avoid'])
+                vector = collision['avoid']
             elif target_position is None:
-                vector = normalise_vector(vector + collision['avoid'])
+                vector = collision['avoid']
         return vector
 
     def calculate_vector_to_target(self,
@@ -26,13 +26,12 @@ class Hindbrain:
                                    current_velocity,
                                    target_position):
         anticipated_position = current_position + current_velocity
-        arrival_factor = self.arrive_factor(anticipated_position,
-                                            target_position)
-        vector = normalise_vector(target_position - anticipated_position) * arrival_factor
+        vector = normalise_vector(target_position - anticipated_position)
         return vector
 
-    def arrive_factor(self, current_position, target_position):
-        current_distance_to_target = distance_between_points(current_position, 
+    def arrive_factor(self, current_position, current_velocity, target_position):
+        anticipated_position = current_position + current_velocity
+        current_distance_to_target = distance_between_points(anticipated_position, 
                                                              target_position)
         if current_distance_to_target < self.arrive_distance:
             return current_distance_to_target/self.arrive_distance

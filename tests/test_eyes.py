@@ -75,3 +75,40 @@ def test_eyes_see_all_visible_objects_again():
     coords = np.array((10.0, 30.0))
     visible = eyes.visible_objects(coords, 'abc', [wall, other_wall, third_wall])
     assert len(visible) == 3
+
+
+def test_looking_for_something():
+    eyes = Eyes()
+    boy = Boy(np.array((100.0, 100.0)), np.array((0.0, 0.0)), 'tootling boy')
+    coords = np.array((10.0, 30.0))
+    seen = eyes.look_for_object(coords, 'abc', 200, {}, [boy])
+    assert seen['image']['kind'] == 'tootling boy'
+
+
+def test_looking_for_something_in_particular():
+    eyes = Eyes()
+    boy = Boy(np.array((100.0, 100.0)), np.array((0.0, 0.0)), 'tootling boy')
+    other_boy = Boy(np.array((120.0, 100.0)), np.array((0.0, 0.0)), 'tootling boy')
+    other_boy.image['eyes'] = 'kind'
+    coords = np.array((10.0, 30.0))
+    seen = eyes.look_for_object(coords, 'abc', 200, {'eyes': 'kind'}, [boy, other_boy])
+    assert seen['image']['eyes'] == 'kind'
+
+
+def test_looking_for_closest_thing():
+    eyes = Eyes()
+    boy = Boy(np.array((100.0, 100.0)), np.array((0.0, 0.0)), 'tootling boy')
+    other_boy = Boy(np.array((120.0, 100.0)), np.array((0.0, 0.0)), 'tootling boy')
+    coords = np.array((10.0, 30.0))
+    seen = eyes.look_for_object(coords, 'abc', 200, {}, [boy, other_boy])
+    assert (seen['intersection'] == (100.0, 100.0)).all()
+
+
+def test_looking_for_hidden_thing():
+    eyes = Eyes()
+    boy = Boy(np.array((100.0, 100.0)), np.array((0.0, 0.0)), 'tootling boy')
+    other_boy = Boy(np.array((120.0, 100.0)), np.array((0.0, 0.0)), 'tootling boy')
+    wall = Wall(np.array((20.0, 2.0)), np.array((20.0, 150.0)))
+    coords = np.array((10.0, 30.0))
+    seen = eyes.look_for_object(coords, 'abc', 200, {'kind': 'tootling boy'}, [boy, other_boy, wall])
+    assert seen is None

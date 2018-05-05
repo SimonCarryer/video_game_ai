@@ -50,4 +50,20 @@ class Eyes:
                 visibles.append(eyes_see)
         return visibles
 
+    def look_for_object(self,
+                        coords,
+                        name,
+                        distance,
+                        object_description,
+                        list_of_screen_objects):
+        matching_objects_in_range = [screen_object for screen_object in \
+                            list_of_screen_objects \
+                            if distance_between_points(coords, screen_object.coords()) < distance \
+                            and object_description.viewitems() <= screen_object.image.viewitems()]
+        if len(matching_objects_in_range) > 0:
+            closest_index = find_closest_point_index(coords, [screen_object.coords() for screen_object in matching_objects_in_range])
+            target_object = matching_objects_in_range[closest_index]
+            return self.look_at_object(coords, name, target_object, list_of_screen_objects)
+        return None
+
         

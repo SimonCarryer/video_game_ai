@@ -18,6 +18,7 @@ class Boy():
         self.substance = ObstructingCircle(coords,
                                            recipe['radius'],
                                            image=recipe)
+        self.image = recipe
         self.brain = Brain(recipe)
 
     def collide(self, screen_object):
