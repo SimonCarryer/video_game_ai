@@ -1,3 +1,4 @@
+import uuid
 from drawing.visible import Visible
 from physics.moving_circle import MovingCircle
 from physics.physical_object import ObstructingCircle
@@ -7,6 +8,7 @@ from screen_objects.boy_recipes import boy_cookbook
 
 class Boy():
     def __init__(self, coords, initial_velocity, boy_type):
+        self.name = uuid.uuid4().bytes
         recipe = boy_cookbook.get_recipe(boy_type)
         self.sprite = Visible(coords,
                               recipe['radius'],
@@ -14,7 +16,6 @@ class Boy():
         self.movement = MovingCircle(coords,
                                      max_accelleration=recipe['accelleration'],
                                      initial_velocity=initial_velocity)
-        recipe['name'] = self.movement.name
         self.substance = ObstructingCircle(coords,
                                            recipe['radius'],
                                            image=recipe)
@@ -39,5 +40,6 @@ class Boy():
         self.substance.center = self.movement.coords
 
     def update(self, screen, list_of_game_objects):
+        list_of_game_objects = [game_object for game_object in list_of_game_objects if game_object.name != self.name]
         self.move(list_of_game_objects)
         self.sprite.draw(self.movement.coords, screen)

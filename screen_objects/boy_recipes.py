@@ -3,7 +3,7 @@ from copy import copy
 boy_recipes = {}
 
 boy_recipes['tootling boy'] = {
-    'kind': 'tootling boy',
+    'kind': 'boy',
     'radius': 7.5,
     'colour': (0, 0, 220),
     'behaviour': {},
@@ -11,7 +11,7 @@ boy_recipes['tootling boy'] = {
 }
 
 boy_recipes['hungry boy'] = {
-    'kind': 'hungry boy',
+    'kind': 'boy',
     'radius': 8,
     'colour': (220, 0, 0),
     'behaviour': {'target': 'mouse pointer', 'target behaviour': 'seek'},
@@ -19,18 +19,18 @@ boy_recipes['hungry boy'] = {
 }
 
 boy_recipes['friendly boy'] = {
-    'kind': 'friendly boy',
+    'kind': 'boy',
     'radius': 7.5,
     'colour': (100, 100, 0),
-    'behaviour': {'target': {'kind': 'hungry boy'}, 'target range': 300, 'target behaviour': 'seek'},
+    'behaviour': {'target': {'kind': 'boy'}, 'target range': 300, 'target behaviour': 'seek'},
     'accelleration': 1
 }
 
 boy_recipes['scaredy boy'] = {
-    'kind': 'scaredy boy',
+    'kind': 'boy',
     'radius': 7.5,
     'colour': (0, 100, 100),
-    'behaviour': {},
+    'behaviour': {'target': {'kind': 'boy'}, 'target range': 100, 'target behaviour': 'flee'},
     'accelleration': 1.5
 }
 

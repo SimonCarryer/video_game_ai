@@ -1,11 +1,6 @@
 from screen_objects.boy import Boy
 
 
-def test_boy_is_created_with_correct_attributes():
-    boy = Boy((100, 100), (20, 0), 'tootling boy')
-    assert boy.__dict__.keys() == ['brain', 'image', 'substance', 'sprite', 'movement']
-
-
 def test_boy_is_cooked_from_recipe():
     boy = Boy((100, 100), (20, 0), 'tootling boy')
     assert boy.substance.radius == 7.5
