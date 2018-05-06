@@ -1,4 +1,4 @@
-import uuid
+from screen_objects.screen_object import ScreenObject
 from drawing.visible import Visible
 from physics.moving_circle import MovingCircle
 from physics.physical_object import ObstructingCircle
@@ -6,9 +6,9 @@ from brains.brain import Brain
 from screen_objects.boy_recipes import boy_cookbook
 
 
-class Boy():
+class Boy(ScreenObject):
     def __init__(self, coords, initial_velocity, boy_type):
-        self.name = uuid.uuid4().bytes
+        super(Boy, self).__init__()
         recipe = boy_cookbook.get_recipe(boy_type)
         self.sprite = Visible(coords,
                               recipe['radius'],
