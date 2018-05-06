@@ -12,7 +12,7 @@ class Obstructing(object):
                                             colliding_object.radius)
         elif colliding_object.collide_type == 'line':
             return self.collide_with_line(colliding_object.start,
-                                            colliding_object.end)
+                                          colliding_object.end)
         else:
             return None
 
@@ -83,4 +83,3 @@ class ObstructingCircle(Obstructing):
             return self.collision(intersection, avoid)
         else:
             return None
-

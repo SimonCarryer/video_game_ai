@@ -84,7 +84,6 @@ class Brain:
             goal_position = self.eyes.get_mouse_position()
         else:
             goal = self.eyes.look_for_object(current_position,
-                                             self.self_image['name'],
                                              self.target_range,
                                              self.target,
                                              list_of_game_objects)
@@ -101,7 +100,6 @@ class Brain:
         collision = self.eyes.look_for_collisions(current_position,
                                                   current_velocity,
                                                   self.self_image['radius'],
-                                                  self.self_image['name'],
                                                   list_of_game_objects)
         if goal is not None:
             vector = self.target_behviour(goal,

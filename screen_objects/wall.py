@@ -8,6 +8,7 @@ class Wall:
         self.substance = ObstructingLine(start, end)
         self.start = start
         self.end = end
+        self.name = None
         self.image = {}
 
     def update(self, screen, list_of_walls):
@@ -23,8 +24,10 @@ class Wall:
 class Boundary:
     def __init__(self, start, end):
         self.substance = ObstructingLine(start, end)
+        self.substance.avoid_vector = lambda x: (0, 0)
         self.start = start
         self.end = end
+        self.name = None
         self.image = {}
 
     def coords(self):
@@ -35,3 +38,5 @@ class Boundary:
 
     def collide(self, colliding_object):
         return self.substance.collide(colliding_object)
+
+

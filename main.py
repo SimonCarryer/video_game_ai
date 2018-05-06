@@ -1,7 +1,7 @@
 from arena.arena import Arena
 from screen_objects.boy import Boy
-from screen_objects.wall import Wall, Boundary
 from pygame.locals import *
+from arena.wall_initialiser import walls, bounds
 import pygame
 
 SCREENRECT = Rect(0, 0, 640, 640)
@@ -18,17 +18,10 @@ scaredy_boy = Boy((200, 100), (-20, 0), 'scaredy boy')
 hungry_boy = Boy((200, 400), (20, 0), 'hungry boy')
 friendly_boy = Boy((400, 400), (20, 0), 'friendly boy')
 
-wall = Wall((200, 200), (300, 200))
-other_wall = Wall((300, 200), (300, 300))
-bound1 = Boundary((0, 0), (640, 0))
-bound2 = Boundary((640, 0), (640, 640))
-bound3 = Boundary((640, 640), (0, 640))
-bound4 = Boundary((0, 640), (0, 0))
+arena.add_screen_objects([hungry_boy, friendly_boy, scaredy_boy, boy])
+arena.add_screen_objects(walls)
+arena.add_screen_objects(bounds)
 
-
-arena.add_screen_objects([hungry_boy, friendly_boy, #, scaredy_boy, boy
-                        wall, other_wall,
-                        bound1, bound2, bound3, bound4])
 
 clock = pygame.time.Clock()
 
@@ -41,7 +34,7 @@ def main(screen, arena):
         screen.fill((30, 30, 30))
         arena.update_screen_objects(screen)
         pygame.display.flip()
-        clock.tick_busy_loop(35)
+        clock.tick_busy_loop(30)
 
 
 if __name__ == '__main__':
