@@ -14,12 +14,6 @@ class BackgroundGrid():
         self.nodecolour = (100, 0, 0)
         self.edgecolour = (38, 75, 0)
 
-    def populate_graph(self, list_of_game_objects):
-        walls = [game_object for game_object in list_of_game_objects if game_object.image['kind'] == 'wall']
-        self.graph = nx.Graph()
-        self.graph.add_edges_from(edges, weight=1)
-        self.graph.add_edges_from(edges, weight=1.2)
-
     def walls_to_vector(self, list_of_walls):
         return np.array([[wall.start[0], wall.start[1], wall.end[0], wall.end[1]] for wall in list_of_walls])
 
@@ -33,8 +27,7 @@ class BackgroundGrid():
                 edges.append((x, y, x-self.grid_spacing, y+self.grid_spacing)) if y + self.grid_spacing <= (self.grid_y*self.grid_spacing) and x >= self.grid_spacing else None
         return np.array(edges)
 
-    def unobstructed_edges(self, edges_vector, list_of_walls):
-        wall_vector = self.walls_to_vector(list_of_walls)
+    def unobstructed_edges(self, edges_vector, wall_vector):
         walls_product = np.tile(np.transpose(wall_vector), len(edges_vector))
         edges_product = np.transpose(np.repeat(edges_vector, len(wall_vector), axis=0))
         a = (edges_product[3] - walls_product[1]) * (edges_product[0] - walls_product[0])\
@@ -51,10 +44,10 @@ class BackgroundGrid():
         intersections = ~((a != b) & (c != d))
         return np.array([i.all() for i in np.split(intersections, len(edges_vector))])
 
-    def calculate_edges(self, list_of_game_objects):
-        walls = [game_object for game_object in list_of_game_objects if game_object.image['kind'] == 'wall']
+    def calculate_edges(self, walls):
         edges = self.edges()
-        final_edges = [((s_x, s_y), (e_x, e_y)) for s_x, s_y, e_x, e_y in edges[self.unobstructed_edges(edges, walls)]]
+        wall_vector = self.walls_to_vector(walls)
+        final_edges = [((s_x, s_y), (e_x, e_y)) for s_x, s_y, e_x, e_y in edges[self.unobstructed_edges(edges, wall_vector)]]
         self.graph.add_edges_from(final_edges, weight=1)
 
     def draw(self, screen):

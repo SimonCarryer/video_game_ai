@@ -22,6 +22,9 @@ class Boy(ScreenObject):
         self.image = recipe
         self.brain = Brain(recipe)
 
+    def initialise_frontal_lobe(self, arena_height, arena_width, list_of_game_objects, grid_spacing=57):
+        self.brain.initialise_frontal_lobe(arena_height, arena_width, grid_spacing, list_of_game_objects)
+
     def collide(self, colliding_object):
         return self.substance.collide(colliding_object)
 

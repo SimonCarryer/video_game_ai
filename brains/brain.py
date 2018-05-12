@@ -2,6 +2,7 @@ from hindbrain import Hindbrain
 from util.helpers import *
 from eyes import Eyes
 from numpy.random import normal
+from frontal_lobe import FrontalLobe
 import random
 
 
@@ -12,6 +13,10 @@ class Brain:
         self.parse_behaviour(image.get('behaviour', {}))
         self.self_image = image
         self.wander_value = 0
+
+    def initialise_frontal_lobe(self, arena_height, arena_width, grid_spacing, list_of_game_objects):
+        self.frontal_lobe = FrontalLobe(arena_height, arena_width, grid_spacing)
+        self.frontal_lobe.populate_grid(list_of_game_objects)
 
     def parse_behaviour(self, behaviour_dict):
         self.target = behaviour_dict.get('target')
