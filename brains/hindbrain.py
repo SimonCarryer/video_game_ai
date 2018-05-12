@@ -14,8 +14,8 @@ class Hindbrain:
         if collision:
             # check if target will be reached before hitting wall
             if target_position is not None and find_closest_point_index(current_position, 
-                                        [collision['intersection'],
-                                            target_position]) == 0:
+                                                                        [collision['intersection'],
+                                                                        target_position]) == 0:
                 vector = collision['avoid']
             elif target_position is None:
                 vector = collision['avoid']

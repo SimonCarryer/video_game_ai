@@ -3,6 +3,7 @@ from screen_objects.wall import Wall
 from screen_objects.boy import Boy
 import numpy as np
 
+import inspect
 
 def test_eyes_see_collision():
     eyes = Eyes()

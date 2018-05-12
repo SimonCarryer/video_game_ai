@@ -192,3 +192,7 @@ def test_divide_by_zero():
     assert (perpendicular_vector(zero_array) == zero_array).all()
     assert (normalise_vector(zero_array) == zero_array).all()
     assert (dot(zero_array, zero_array, zero_array) == zero_array).all()
+    ones_array = np.array((1.0, 1.0))
+    twos_array = np.array((2.0, 2.0))
+    assert (find_intersecting_point(zero_array, ones_array, ones_array, twos_array) == ones_array).all()
+    assert (find_intersecting_point(ones_array, zero_array, zero_array, twos_array) == zero_array).all()

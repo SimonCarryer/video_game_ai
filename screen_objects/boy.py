@@ -22,11 +22,8 @@ class Boy(ScreenObject):
         self.image = recipe
         self.brain = Brain(recipe)
 
-    def collide(self, screen_object):
-        if self.movement.name == screen_object.name:
-            return None
-        else:
-            return self.substance.collide(screen_object)
+    def collide(self, colliding_object):
+        return self.substance.collide(colliding_object)
 
     def coords(self):
         return self.substance.center

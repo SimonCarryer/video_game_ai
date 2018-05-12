@@ -1,10 +1,8 @@
 from util.helpers import *
-import uuid
 
 
 class Colliding(object):
     def __init__(self, coords):
-        self.name = uuid.uuid4().bytes
         self.coords = coords
         self.collide_type = None
 

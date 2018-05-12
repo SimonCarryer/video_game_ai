@@ -8,8 +8,8 @@ class Wall(ScreenObject):
         super(Wall, self).__init__()
         self.sprite = VisibleLine(start, end)
         self.substance = ObstructingLine(start, end)
-        self.start = start
-        self.end = end
+        self.start = self.substance.start
+        self.end = self.substance.end
         self.image['kind'] = 'wall'
 
     def update(self, screen, list_of_walls):

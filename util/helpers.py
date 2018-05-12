@@ -5,7 +5,10 @@ from sklearn.metrics.pairwise import euclidean_distances
 
 
 def normalise_vector(vector):
-    return normalize(vector.reshape(1, -1))[0]
+    if np.isnan(vector).any():
+        return np.array((0, 0))
+    else:
+        return normalize(vector.reshape(1, -1))[0]
 
 
 def magnitude_vector(vector):
@@ -33,6 +36,11 @@ def find_intersecting_point(line_a_start,
     dap = perpendicular_vector(da)
     denom = np.dot(dap, db)
     num = np.dot(dap, dp)
+    if (np.array((denom, num)) == np.array((0, 0))).any():
+        if (line_a_start == line_b_start).all():
+            return line_a_start
+        else:
+            return line_a_end
     return (num / denom.astype(float)) * db + line_b_start
 
 

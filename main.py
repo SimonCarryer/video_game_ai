@@ -2,6 +2,7 @@ from arena.arena import Arena
 from screen_objects.boy import Boy
 from pygame.locals import *
 from arena.wall_initialiser import walls, bounds
+from brains.pathfinding.grid import BackgroundGrid
 import pygame
 
 SCREENRECT = Rect(0, 0, 640, 640)
@@ -22,6 +23,8 @@ arena.add_screen_objects([hungry_boy, friendly_boy, scaredy_boy, boy])
 arena.add_screen_objects(walls)
 arena.add_screen_objects(bounds)
 
+grid = BackgroundGrid(arena.w, arena.h, 57)
+grid.calculate_edges(walls)
 
 clock = pygame.time.Clock()
 
@@ -32,6 +35,7 @@ def main(screen, arena):
             if event.type == QUIT:
                 return
         screen.fill((30, 30, 30))
+        grid.draw(screen)
         arena.update_screen_objects(screen)
         pygame.display.flip()
         clock.tick_busy_loop(30)

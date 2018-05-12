@@ -2,13 +2,6 @@ from physics.moving_circle import MovingCircle
 from physics.physical_object import ObstructingLine
 
 
-def test_circles_have_unique_names():
-    obj_1 = MovingCircle([10, 10], initial_velocity=[10, 0], radius=7.5)
-    obj_2 = MovingCircle([10, 10], initial_velocity=[10, 0], radius=7.5)
-    assert obj_1.name != obj_2.name
-    assert obj_1.name == obj_1.name
-
-
 def test_circle_moves_when_not_colliding():
     circle = MovingCircle([10, 10], initial_velocity=[10, 0], radius=7.5)
     assert (circle.coords == [10, 10]).all()
