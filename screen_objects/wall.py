@@ -29,6 +29,7 @@ class Boundary(ScreenObject):
         self.substance.avoid_vector = lambda x: (0, 0)
         self.start = start
         self.end = end
+        self.image['kind'] = 'boundary'
 
     def coords(self):
         return self.substance.center

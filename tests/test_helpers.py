@@ -1,5 +1,6 @@
 import numpy as np
 from util.helpers import *
+from screen_objects.wall import Wall
 
 vertical_line = (np.array((4.0, 2.0)), np.array((4.0, 4.0)))
 horizontal_line = (np.array((2.0, 4.0)), np.array((4.0, 4.0)))
@@ -202,3 +203,10 @@ def test_unobstructed_edges():
     edges_vector = np.array([[0, 24, 24, 24], [0, 40, 24, 40]])
     wall_vector = np.array([[12, 12, 12, 32], [12, 12, 12, 14]])
     assert (unobstructed_edges(edges_vector, wall_vector) == [False, True]).all()
+
+
+def test_walls_to_vector():
+    wall = Wall((12, 12), (12, 32))
+    wall_2 = Wall((22, 12), (22, 32))
+    vector = walls_vector_from_game_objects([wall, wall_2])
+    assert (vector == np.array([[12, 12, 12, 32], [22, 12, 22, 32]])).all()

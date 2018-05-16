@@ -112,3 +112,39 @@ def test_looking_for_hidden_thing():
     coords = np.array((10.0, 30.0))
     seen = eyes.look_for_object(coords, 200, {'kind': 'tootling boy'}, [boy, other_boy, wall])
     assert seen is None
+
+
+def test_direct_path_to_goal_returns_true_when_no_walls():
+    eyes = Eyes()
+    current_position = np.array((1.0, 1.0))
+    goal = np.array((9.0, 9.0))
+    list_of_game_objects = []
+    assert eyes.direct_path_to_goal(current_position, goal, list_of_game_objects)
+
+
+def test_direct_path_to_goal_returns_true_when_unobstructed():
+    eyes = Eyes()
+    current_position = np.array((1.0, 1.0))
+    goal = np.array((9.0, 9.0))
+    wall = Wall((2, 1), (9, 1))
+    list_of_game_objects = [wall]
+    assert eyes.direct_path_to_goal(current_position, goal, list_of_game_objects)
+
+
+def test_direct_path_to_goal_returns_false_when_obstructed():
+    eyes = Eyes()
+    current_position = np.array((1.0, 1.0))
+    goal = np.array((9.0, 9.0))
+    wall = Wall((1, 9), (9, 1))
+    list_of_game_objects = [wall]
+    assert not eyes.direct_path_to_goal(current_position, goal, list_of_game_objects)
+
+
+def test_direct_path_to_goal_returns_false_when_obstructed_wth_many_walls():
+    eyes = Eyes()
+    current_position = np.array((1.0, 1.0))
+    goal = np.array((9.0, 9.0))
+    wall = Wall((1, 9), (9, 1))
+    wall_2 = Wall((2, 9), (10, 2))
+    list_of_game_objects = [wall, wall_2]
+    assert not eyes.direct_path_to_goal(current_position, goal, list_of_game_objects)

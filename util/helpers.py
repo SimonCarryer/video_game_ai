@@ -207,3 +207,8 @@ def unobstructed_edges(edges_vector, wall_vector):
         > (walls_product[3] - walls_product[1]) * (edges_product[2] - walls_product[0])
     intersections = ~((a != b) & (c != d))
     return np.array([i.all() for i in np.split(intersections, len(edges_vector))])
+
+
+def walls_vector_from_game_objects(list_of_game_objects):
+    walls = [game_object for game_object in list_of_game_objects if game_object.image['kind'] == 'wall']
+    return np.array([[wall.start[0], wall.start[1], wall.end[0], wall.end[1]] for wall in walls])

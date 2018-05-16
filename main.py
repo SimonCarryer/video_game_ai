@@ -25,6 +25,8 @@ arena.add_screen_objects(bounds)
 
 clock = pygame.time.Clock()
 
+hungry_boy.initialise_frontal_lobe(arena.h, arena.w, walls)
+
 
 def main(screen, arena):
     while 1:

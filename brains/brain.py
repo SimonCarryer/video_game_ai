@@ -15,22 +15,19 @@ class Brain:
         self.wander_value = 0
 
     def initialise_frontal_lobe(self, arena_height, arena_width, grid_spacing, list_of_game_objects):
-        if not hasattr(self, 'frontal_lobe'):
-            self.frontal_lobe = FrontalLobe(arena_height, arena_width, grid_spacing)
+        self.frontal_lobe = FrontalLobe(arena_height, arena_width, grid_spacing)
         self.frontal_lobe.populate_grid(list_of_game_objects)
 
     def parse_behaviour(self, behaviour_dict):
         self.target = behaviour_dict.get('target')
+        self.pathfind = behaviour_dict.get('pathfind', False)
         self.target_range = behaviour_dict.get('target range')
         if behaviour_dict.get('target behaviour') == 'seek':
-            self.target_behviour = self.seek
+            self.target_behaviour = self.seek
         elif behaviour_dict.get('target behaviour') == 'flee':
-            self.target_behviour = self.flee
-        elif behaviour_dict.get('target behaviour') == 'pathfind':
-            self.frontal_lobe = FrontalLobe(640, 640, 57)
-            self.target_behviour = self.pathfind
+            self.target_behaviour = self.flee
         else:
-            self.target_behviour = self.wander
+            self.target_behaviour = self.wander
 
     def seek(self,
              target_position,
@@ -98,6 +95,8 @@ class Brain:
                                              list_of_game_objects)
             if goal is not None:
                 goal_position = goal['intersection']
+        if goal_position is not None and self.pathfind and not self.eyes.direct_path_to_goal(current_position, goal_position, list_of_game_objects):
+            goal_position = self.frontal_lobe.pathfind_goal(current_position, goal_position)
         return goal_position
 
     def get_goal_vector(self,
@@ -111,7 +110,7 @@ class Brain:
                                                   self.self_image['radius'],
                                                   list_of_game_objects)
         if goal is not None:
-            vector = self.target_behviour(goal,
+            vector = self.target_behaviour(goal,
                                         current_position,
                                         current_velocity,
                                         collision)

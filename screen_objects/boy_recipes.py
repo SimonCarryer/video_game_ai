@@ -14,7 +14,9 @@ boy_recipes['hungry boy'] = {
     'kind': 'boy',
     'radius': 8,
     'colour': (220, 0, 0),
-    'behaviour': {'target': 'mouse pointer', 'target behaviour': 'seek'},
+    'behaviour': {'target': 'mouse pointer', 
+                  'target behaviour': 'seek', 
+                  'pathfind': True},
     'accelleration': 4
 }
 

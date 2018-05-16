@@ -16,6 +16,13 @@ class Eyes:
     def __init__(self):
         self.look_ahead = 10
 
+    def direct_path_to_goal(self, current_position, goal, list_of_game_objects):
+        walls_vector = walls_vector_from_game_objects(list_of_game_objects)
+        if len(walls_vector) == 0:
+            return True
+        goal_edge = np.array([[current_position[0], current_position[1], goal[0], goal[1]]])
+        return unobstructed_edges(goal_edge, walls_vector)
+
     def get_mouse_position(self):
         return np.array(pygame.mouse.get_pos()).astype(float)
 
