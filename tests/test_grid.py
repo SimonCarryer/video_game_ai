@@ -1,14 +1,6 @@
 from brains.pathfinding.grid import BackgroundGrid
-from screen_objects.wall import Wall
 import numpy as np
 import timeit
-
-def test_walls_to_vector():
-    grid = BackgroundGrid(100, 100, 20)
-    wall = Wall((12, 12), (12, 32))
-    wall_2 = Wall((22, 12), (22, 32))
-    vector = grid.walls_to_vector([wall, wall_2])
-    assert (vector == np.array([[12, 12, 12, 32], [22, 12, 22, 32]])).all()
 
 
 def test_edges():
@@ -16,16 +8,27 @@ def test_edges():
     assert len(grid.edges()) == 72
 
 
-def test_unobstructed_edges():
-    grid = BackgroundGrid(100, 100, 20)
-    wall_vector = np.array([[12, 12, 12, 32], [12, 12, 12, 14]])
-    assert grid.unobstructed_edges(grid.edges(), wall_vector).sum() == 69
-
-
 def test_calculate_edges():
     grid = BackgroundGrid(100, 100, 20)
-    wall = Wall((12, 12), (12, 32))
-    wall2 = Wall((12, 12), (12, 14))
-    grid.calculate_edges([wall, wall2])
-    assert len(grid.graph.edges()) == 69
-    
+    wall_vector = np.array([[12, 12, 12, 32], [12, 12, 12, 14]])
+    grid.calculate_edges(wall_vector)
+    assert len(grid.graph.edges()) == 69  # nice
+
+
+def test_pathfind_returns_path_when_not_obstructed():
+    grid = BackgroundGrid(100, 100, 20)
+    grid.calculate_edges([])
+    start_node = (10, 10)
+    goal_node = (90, 90)
+    path = grid.pathfind(start_node, goal_node)
+    assert path == [(10, 10), (30, 30), (50, 50), (70, 70), (90, 90)]
+
+
+def test_pathfind_returns_none_when_obstructed():
+    grid = BackgroundGrid(100, 100, 20)
+    wall_vector = np.array([[30, 0, 30, 100]])
+    grid.calculate_edges(wall_vector)
+    start_node = (10, 10)
+    goal_node = (90, 90)
+    path = grid.pathfind(start_node, goal_node)
+    assert path is None

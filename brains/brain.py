@@ -15,7 +15,8 @@ class Brain:
         self.wander_value = 0
 
     def initialise_frontal_lobe(self, arena_height, arena_width, grid_spacing, list_of_game_objects):
-        self.frontal_lobe = FrontalLobe(arena_height, arena_width, grid_spacing)
+        if not hasattr(self, 'frontal_lobe'):
+            self.frontal_lobe = FrontalLobe(arena_height, arena_width, grid_spacing)
         self.frontal_lobe.populate_grid(list_of_game_objects)
 
     def parse_behaviour(self, behaviour_dict):
@@ -25,6 +26,9 @@ class Brain:
             self.target_behviour = self.seek
         elif behaviour_dict.get('target behaviour') == 'flee':
             self.target_behviour = self.flee
+        elif behaviour_dict.get('target behaviour') == 'pathfind':
+            self.frontal_lobe = FrontalLobe(640, 640, 57)
+            self.target_behviour = self.pathfind
         else:
             self.target_behviour = self.wander
 

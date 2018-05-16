@@ -196,3 +196,9 @@ def test_divide_by_zero():
     twos_array = np.array((2.0, 2.0))
     assert (find_intersecting_point(zero_array, ones_array, ones_array, twos_array) == ones_array).all()
     assert (find_intersecting_point(ones_array, zero_array, zero_array, twos_array) == zero_array).all()
+
+
+def test_unobstructed_edges():
+    edges_vector = np.array([[0, 24, 24, 24], [0, 40, 24, 40]])
+    wall_vector = np.array([[12, 12, 12, 32], [12, 12, 12, 14]])
+    assert (unobstructed_edges(edges_vector, wall_vector) == [False, True]).all()
