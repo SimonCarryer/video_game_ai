@@ -16,21 +16,48 @@ class BackgroundGrid():
 
     def edges(self):
         edges = []
+        weights = []
         for x in range(self.grid_spacing/2, (self.grid_x * self.grid_spacing), self.grid_spacing):
             for y in range(self.grid_spacing/2, (self.grid_y * self.grid_spacing), self.grid_spacing):
-                edges.append((x, y, x-self.grid_spacing, y)) if x >= self.grid_spacing else None
-                edges.append((x, y, x, y-self.grid_spacing)) if y >= self.grid_spacing else None
-                edges.append((x, y, x-self.grid_spacing, y-self.grid_spacing)) if x >= self.grid_spacing and y >= self.grid_spacing else None
-                edges.append((x, y, x-self.grid_spacing, y+self.grid_spacing)) if y + self.grid_spacing <= (self.grid_y*self.grid_spacing) and x >= self.grid_spacing else None
+                if x >= self.grid_spacing:
+                    edges.append((x, y, x-self.grid_spacing, y))
+                    weights.append(1)
+                if y >= self.grid_spacing:
+                    edges.append((x, y, x, y-self.grid_spacing))
+                    weights.append(1)
+                if x >= self.grid_spacing and y >= self.grid_spacing:
+                    edges.append((x, y, x-self.grid_spacing, y-self.grid_spacing))
+                    weights.append(1.2)
+                if y + self.grid_spacing <= (self.grid_y*self.grid_spacing) and x >= self.grid_spacing:
+                    edges.append((x, y, x-self.grid_spacing, y+self.grid_spacing))
+                    weights.append(1.2)
         return np.array(edges)
+
+    def weights(self):
+        weights = []
+        for x in range(self.grid_spacing/2, (self.grid_x * self.grid_spacing), self.grid_spacing):
+            for y in range(self.grid_spacing/2, (self.grid_y * self.grid_spacing), self.grid_spacing):
+                if x >= self.grid_spacing:
+                    weights.append(1)
+                if y >= self.grid_spacing:
+                    weights.append(1)
+                if x >= self.grid_spacing and y >= self.grid_spacing:
+                    weights.append(1.2)
+                if y + self.grid_spacing <= (self.grid_y*self.grid_spacing) and x >= self.grid_spacing:
+                    weights.append(1.2)
+        return np.array(weights)
 
     def calculate_edges(self, wall_vector):
         edges = self.edges()
+        weights = self.weights()
         if len(wall_vector) > 0:
-            final_edges = [((s_x, s_y), (e_x, e_y)) for s_x, s_y, e_x, e_y in edges[unobstructed_edges(edges, wall_vector)]]
+            unobstructed_indices = unobstructed_edges(edges, wall_vector)
+            final_edges = [((s_x, s_y), (e_x, e_y)) for s_x, s_y, e_x, e_y in edges[unobstructed_indices]]
+            weights = weights[unobstructed_indices]
         else:
             final_edges = [((s_x, s_y), (e_x, e_y)) for s_x, s_y, e_x, e_y in edges]
-        self.graph.add_edges_from(final_edges, weight=1)
+        for nodes, weight in zip(final_edges, weights):
+            self.graph.add_edge(nodes[0], nodes[1], weight=weight)
 
     def closest_node(self, point):
         nodes = np.array(self.graph.nodes())

@@ -8,6 +8,13 @@ def test_edges():
     assert len(grid.edges()) == 72
 
 
+def test_edge_weights():
+    grid = BackgroundGrid(100, 100, 20)
+    grid.calculate_edges([])
+    edge = grid.graph.get_edge_data((50, 50), (70, 70))
+    assert edge['weight'] == 1.2
+
+
 def test_calculate_edges():
     grid = BackgroundGrid(100, 100, 20)
     wall_vector = np.array([[12, 12, 12, 32], [12, 12, 12, 14]])
