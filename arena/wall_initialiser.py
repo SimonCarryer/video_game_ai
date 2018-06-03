@@ -20,7 +20,7 @@ def make_maze_nodes(w=8, h=8):
             walk(xx, yy)
             
     walk(randrange(w), randrange(h))
-    return ver, hor
+    return [[None] + i[1:] for i in ver[:-1]], [[None] * w] + hor[1:]
 
 vertical_walls, horizontal_walls = make_maze_nodes()
 

@@ -31,8 +31,12 @@ class MovingCircle(Moving):
     def move(self, list_of_screen_objects):
         self.recalculate_velocity()
         self.last_coords = self.coords
-        self.coords = (self.velocity / 2) + self.coords
-        self.handle_collisions(list_of_screen_objects)
-        self.coords = (self.velocity / 2) + self.coords
-        self.handle_collisions(list_of_screen_objects)
+        if magnitude_vector(self.velocity) > self.radius:
+            self.coords = (self.velocity / 2) + self.coords
+            self.handle_collisions(list_of_screen_objects)
+            self.coords = (self.velocity / 2) + self.coords
+            self.handle_collisions(list_of_screen_objects)
+        else:
+            self.coords = (self.velocity) + self.coords
+            self.handle_collisions(list_of_screen_objects)
 

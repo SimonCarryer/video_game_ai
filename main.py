@@ -13,13 +13,13 @@ bestdepth = pygame.display.mode_ok(SCREENRECT.size, winstyle, 32)
 screen = pygame.display.set_mode((640, 640), winstyle, bestdepth)
 
 arena = Arena(SCREENRECT)
-# boy = Boy((100, 105), (20, 0), 'tootling boy')
-# scaredy_boy = Boy((200, 100), (-20, 0), 'scaredy boy')
+boy = Boy((100, 105), (20, 0), 'tootling boy')
+scaredy_boy = Boy((200, 100), (-20, 0), 'scaredy boy')
 
 hungry_boy = Boy((200, 400), (20, 0), 'hungry boy')
-# friendly_boy = Boy((400, 400), (20, 0), 'friendly boy')
+friendly_boy = Boy((400, 400), (20, 0), 'friendly boy')
 
-arena.add_screen_objects([hungry_boy]) #, friendly_boy, scaredy_boy, boy])
+arena.add_screen_objects([hungry_boy, friendly_boy, scaredy_boy, boy])
 arena.add_screen_objects(walls)
 arena.add_screen_objects(bounds)
 

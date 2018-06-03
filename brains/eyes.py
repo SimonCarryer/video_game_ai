@@ -46,7 +46,7 @@ class Eyes:
         if self.direct_path_to_goal(coords, screen_object.coords(), list_of_screen_objects):
             return {'intersection': screen_object.coords(),
                     'image': screen_object.image
-            }
+                    }
         else:
             return None
 
@@ -67,7 +67,8 @@ class Eyes:
                         list_of_screen_objects):
         matching_objects_in_range = [screen_object for screen_object in \
                             list_of_screen_objects \
-                            if distance_between_points(coords, screen_object.coords()) < distance \
+                            if screen_object.image['kind'] != 'wall'
+                            and distance_between_points(coords, screen_object.coords()) < distance \
                             and object_description.viewitems() <= screen_object.image.viewitems()]
         if len(matching_objects_in_range) > 0:
             closest_index = find_closest_point_index(coords, [screen_object.coords() for screen_object in matching_objects_in_range])

@@ -88,6 +88,8 @@ class Brain:
         goal_position = None
         if self.target == 'mouse pointer':
             goal_position = self.eyes.get_mouse_position()
+        if self.target is None:
+            goal_position = None
         else:
             goal = self.eyes.look_for_object(current_position,
                                              self.target_range,
