@@ -11,6 +11,11 @@ class EyeBeam(Colliding):
         self.end = np.array(end)
         self.collide_type = 'line'
 
+    def unobstructed(self, list_of_game_objects):
+        walls_vector = walls_vector_from_game_objects(list_of_game_objects)
+        edge_vector = np.array((self.start, self.end))
+        return unobstructed_edges(edge_vector, walls_vector)[0]
+
 
 class Eyes:
     def __init__(self):
@@ -38,10 +43,10 @@ class Eyes:
         return None
 
     def look_at_object(self, coords, screen_object, list_of_screen_objects):
-        ray = EyeBeam(coords, screen_object.coords())
-        collisions = ray.get_collisions(list_of_screen_objects)
-        if len(collisions) == 1:
-            return collisions[0]
+        if self.direct_path_to_goal(coords, screen_object.coords(), list_of_screen_objects):
+            return {'intersection': screen_object.coords(),
+                    'image': screen_object.image
+            }
         else:
             return None
 
