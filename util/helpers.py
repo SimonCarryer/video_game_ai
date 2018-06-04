@@ -1,5 +1,6 @@
 import numpy as np
 import random
+from itertools import compress
 from sklearn.preprocessing import normalize
 from sklearn.metrics.pairwise import euclidean_distances
 
@@ -209,6 +210,25 @@ def unobstructed_edges(edges_vector, wall_vector):
     return np.array([i.all() for i in np.split(intersections, len(edges_vector))])
 
 
+def just_walls(list_of_game_objects):
+    return [game_object for game_object in list_of_game_objects if game_object.image['kind'] == 'wall']
+
+
 def walls_vector_from_game_objects(list_of_game_objects):
-    walls = [game_object for game_object in list_of_game_objects if game_object.image['kind'] == 'wall']
+    walls = just_walls(list_of_game_objects)
     return np.array([[wall.start[0], wall.start[1], wall.end[0], wall.end[1]] for wall in walls])
+
+
+def filter_threatening_walls(circle_coords, circle_radius, list_of_walls):
+    if len(list_of_walls) == 0:
+        return []
+    if len(list_of_walls) == 1:
+        wall_coords = np.array([wall.coords() for wall in list_of_walls]).reshape(1, -1)
+    else:
+        wall_coords = np.array([wall.coords() for wall in list_of_walls])
+    wall_lengths = np.array([wall.length for wall in list_of_walls])
+    distances_to_wall = euclidean_distances(circle_coords.reshape(1, -1), wall_coords)
+    threat_range = (wall_lengths/2) + circle_radius
+    fil = (distances_to_wall < threat_range)[0]
+    return list(compress(list_of_walls, fil))
+

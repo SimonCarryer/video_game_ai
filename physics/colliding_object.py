@@ -6,9 +6,12 @@ class Colliding(object):
         self.coords = coords
         self.collide_type = None
 
+    def possible_collisions(self, list_of_screen_objects):
+        return list_of_screen_objects
+
     def get_collisions(self, list_of_screen_objects):
         collisions = []
-        for screen_object in list_of_screen_objects:
+        for screen_object in self.possible_collisions(list_of_screen_objects):
             collision = screen_object.collide(self)
             if collision is not None:
                 collisions.append(collision)

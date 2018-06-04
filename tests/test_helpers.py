@@ -210,3 +210,12 @@ def test_walls_to_vector():
     wall_2 = Wall((22, 12), (22, 32))
     vector = walls_vector_from_game_objects([wall, wall_2])
     assert (vector == np.array([[12, 12, 12, 32], [22, 12, 22, 32]])).all()
+
+
+def test_filter_threatening_walls():
+    wall = Wall((12, 12), (12, 32))
+    wall_2 = Wall((22, 12), (22, 32))
+    circle_coords = np.array((10, 20))
+    circle_radius = 3
+    threatening_walls = filter_threatening_walls(circle_coords, circle_radius, [wall, wall_2])
+    assert threatening_walls == [wall]

@@ -17,6 +17,12 @@ class MovingCircle(Moving):
         self.radius = radius
         self.collide_type = 'circle'
 
+    def possible_collisions(self, list_of_screen_objects):
+        walls = just_walls(list_of_screen_objects)
+        not_walls = [screen_object for screen_object in list_of_screen_objects if screen_object.image['kind'] != 'wall']
+        threatening_walls = filter_threatening_walls(self.coords, self.radius, walls)
+        return threatening_walls + not_walls
+
     def vector_from_collision(self, collision_point):
         vector = normalise_vector(self.coords - collision_point)
         return vector * self.radius
