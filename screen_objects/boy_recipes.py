@@ -10,13 +10,23 @@ boy_recipes['tootling boy'] = {
     'accelleration': 2
 }
 
-boy_recipes['hungry boy'] = {
+boy_recipes['pathfinding boy'] = {
     'kind': 'boy',
     'radius': 8,
     'colour': (220, 0, 0),
     'behaviour': {'target': 'mouse pointer', 
                   'target behaviour': 'seek', 
                   'pathfind': True},
+    'accelleration': 4
+}
+
+boy_recipes['hungry boy'] = {
+    'kind': 'boy',
+    'radius': 8,
+    'colour': (220, 0, 0),
+    'behaviour': {'target': 'mouse pointer', 
+                  'target behaviour': 'seek', 
+                  'pathfind': False},
     'accelleration': 4
 }
 

@@ -214,7 +214,7 @@ def test_walls_to_vector():
 
 def test_filter_threatening_walls():
     wall = Wall((12, 12), (12, 32))
-    wall_2 = Wall((22, 12), (22, 32))
+    wall_2 = Wall((122, 112), (122, 132))
     circle_coords = np.array((10, 20))
     circle_radius = 3
     threatening_walls = filter_threatening_walls(circle_coords, circle_radius, [wall, wall_2])
