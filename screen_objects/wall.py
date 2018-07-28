@@ -27,6 +27,7 @@ class Wall(ScreenObject):
 class Boundary(ScreenObject):
     def __init__(self, start, end):
         super(Boundary, self).__init__()
+        self.sprite = VisibleLine(start, end)
         self.substance = ObstructingLine(start, end)
         self.substance.avoid_vector = lambda x: (0, 0)
         self.start = self.substance.start

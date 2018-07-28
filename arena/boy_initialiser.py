@@ -3,7 +3,7 @@ from screen_objects.boy import Boy
 
 def pathfinding_boy(arena):
     hungry_boy = Boy((200, 400), (20, 0), 'pathfinding boy')
-    hungry_boy.initialise_frontal_lobe(arena.h, arena.w, arena.screen_objects)
+    hungry_boy.initialise_frontal_lobe(arena.h, arena.w, [])
     return [hungry_boy]
 
 

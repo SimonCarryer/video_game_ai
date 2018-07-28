@@ -22,7 +22,7 @@ class Boy(ScreenObject):
         self.image = recipe
         self.brain = Brain(recipe)
 
-    def initialise_frontal_lobe(self, arena_height, arena_width, list_of_game_objects, grid_spacing=37):
+    def initialise_frontal_lobe(self, arena_height, arena_width, list_of_game_objects, grid_spacing=41):
         self.brain.initialise_frontal_lobe(arena_height, arena_width, grid_spacing, list_of_game_objects)
 
     def collide(self, colliding_object):
@@ -41,5 +41,6 @@ class Boy(ScreenObject):
 
     def update(self, screen, list_of_game_objects):
         list_of_game_objects = [game_object for game_object in list_of_game_objects if game_object.name != self.name]
+        self.brain.update(self.movement.coords, list_of_game_objects)
         self.move(list_of_game_objects)
         self.sprite.draw(self.movement.coords, screen)

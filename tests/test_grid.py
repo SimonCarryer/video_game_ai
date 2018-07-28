@@ -39,3 +39,11 @@ def test_pathfind_returns_none_when_obstructed():
     goal_node = (90, 90)
     path = grid.pathfind(start_node, goal_node)
     assert path is None
+
+
+def test_remove_edges():
+    grid = BackgroundGrid(100, 100, 20)
+    wall_vector = np.array([[12, 12, 12, 32], [12, 12, 12, 14]])
+    grid.calculate_edges([])
+    grid.remove_edges(wall_vector)
+    assert len(grid.graph.edges()) == 69

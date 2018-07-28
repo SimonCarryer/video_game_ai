@@ -3,6 +3,7 @@ from util.helpers import *
 from eyes import Eyes
 from numpy.random import normal
 from frontal_lobe import FrontalLobe
+from memory import Memory
 import random
 
 
@@ -13,8 +14,19 @@ class Brain:
         self.parse_behaviour(image.get('behaviour', {}))
         self.self_image = image
         self.wander_value = 0
+        self.update = self.dumb_update
+
+    def dumb_update(self, current_position, list_of_game_objects):
+        pass
+
+    def smart_update(self, current_position, list_of_game_objects):
+        visible = self.eyes.visible_objects(current_position, list_of_game_objects)
+        self.memory.remember_walls(visible)
+        self.frontal_lobe.update_grid(self.memory.known_walls)
 
     def initialise_frontal_lobe(self, arena_height, arena_width, grid_spacing, list_of_game_objects):
+        self.update = self.smart_update
+        self.memory = Memory()
         self.frontal_lobe = FrontalLobe(arena_height, arena_width, grid_spacing)
         self.frontal_lobe.populate_grid(list_of_game_objects)
 
@@ -28,6 +40,11 @@ class Brain:
             self.target_behaviour = self.flee
         else:
             self.target_behaviour = self.wander
+
+    def remember_what_you_see(self, current_position, list_of_game_objects):
+        visible = self.eyes.visible_objects(current_position, list_of_game_objects)
+        self.memory.remember_walls(visible)
+        self.frontal_lobe.populate_grid(self.memory.known_walls)
 
     def seek(self,
              target_position,
@@ -96,7 +113,7 @@ class Brain:
                                              self.target,
                                              list_of_game_objects)
             if goal is not None:
-                goal_position = goal['intersection']
+                goal_position = goal.coords()
         if goal_position is not None and self.pathfind and not self.eyes.direct_path_to_goal(current_position, goal_position, list_of_game_objects):
             goal_position = self.frontal_lobe.pathfind_goal(current_position, goal_position)
         return goal_position

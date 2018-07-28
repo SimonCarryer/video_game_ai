@@ -43,10 +43,9 @@ class Eyes:
         return None
 
     def look_at_object(self, coords, screen_object, list_of_screen_objects):
-        if self.direct_path_to_goal(coords, screen_object.coords(), list_of_screen_objects):
-            return {'intersection': screen_object.coords(),
-                    'image': screen_object.image
-                    }
+        obstructions = [i for i in list_of_screen_objects if i != screen_object]
+        if self.direct_path_to_goal(coords, screen_object.coords(), obstructions):
+            return screen_object
         else:
             return None
 

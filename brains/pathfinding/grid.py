@@ -59,6 +59,12 @@ class BackgroundGrid():
         for nodes, weight in zip(final_edges, weights):
             self.graph.add_edge(nodes[0], nodes[1], weight=weight)
 
+    def remove_edges(self, wall_vector):
+        edges = np.array([(s_x, s_y, e_x, e_y) for (s_x, s_y), (e_x, e_y) in self.graph.edges()])
+        unobstructed_indices = unobstructed_edges(edges, wall_vector)
+        for edge in edges[~unobstructed_indices]:
+            self.graph.remove_edge((edge[0], edge[1]), (edge[2], edge[3]))
+
     def closest_node(self, point):
         nodes = np.array(self.graph.nodes())
         closest_index = find_closest_point_index(point, nodes)

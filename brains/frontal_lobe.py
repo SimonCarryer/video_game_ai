@@ -11,6 +11,10 @@ class FrontalLobe:
         walls = walls_vector_from_game_objects(list_of_game_objects)
         self.grid.calculate_edges(walls)
 
+    def update_grid(self, list_of_game_objects):
+        walls = walls_vector_from_game_objects(list_of_game_objects)
+        self.grid.remove_edges(walls)
+
     def closest_node(self, position):
         nodes = self.grid.graph.nodes()
         closest_index = find_closest_point_index(position, np.array(nodes))
