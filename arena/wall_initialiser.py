@@ -3,7 +3,7 @@ from random import shuffle, randrange
 import numpy as np
 
 
-def make_maze_nodes(w=8, h=8):
+def make_maze_nodes(w=12, h=12):
     vis = [[0] * w + [1] for _ in range(h)] + [[1] * (w + 1)]
     ver = [[((x, y), (x, y+1)) for x in range(w)] for y in range(h)] + [[]]
     hor = [[((x, y), (x+1, y)) for x in range(w)] for y in range(h + 1)]
@@ -31,7 +31,7 @@ def maze():
     vertical_walls, horizontal_walls = make_maze_nodes()
     walls = []
 
-    grid_spacing=640/8
+    grid_spacing=640/12
 
     for row in vertical_walls:
         for nodes in row:
@@ -72,10 +72,12 @@ def initialise_walls(arena, method):
         walls = shape()
     elif method == 'pathfinding':
         walls = maze()
+    elif method == 'goap':
+        walls = []
     bounds = [Boundary((0, 0), (arena.h, 0)),
               Boundary((arena.h, 0), (arena.h, arena.w)),
               Boundary((arena.h, arena.w), (0, arena.w)),
               Boundary((0, arena.w), (0, 0))
-            ]
+              ]
     arena.add_screen_objects(walls)
     arena.add_screen_objects(bounds)

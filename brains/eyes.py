@@ -20,6 +20,10 @@ class EyeBeam(Colliding):
 class Eyes:
     def __init__(self):
         self.look_ahead = 10
+        self.list_of_game_objects = []
+
+    def update(self, list_of_game_objects):
+        self.list_of_game_objects = list_of_game_objects
 
     def direct_path_to_goal(self, current_position, goal, list_of_game_objects):
         walls_vector = walls_vector_from_game_objects(list_of_game_objects)

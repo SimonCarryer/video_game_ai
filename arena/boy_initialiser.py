@@ -7,6 +7,12 @@ def pathfinding_boy(arena):
     return [hungry_boy]
 
 
+def goap_boy(arena):
+    hungry_boy = Boy((200, 400), (20, 0), 'pathfinding boy')
+    hungry_boy.initialise_frontal_lobe(arena.h, arena.w, [])
+    return [hungry_boy]
+
+
 def all_the_boys():
     boy = Boy((100, 105), (20, 0), 'tootling boy')
     scaredy_boy = Boy((200, 100), (-20, 0), 'scaredy boy')
@@ -20,4 +26,6 @@ def initialise_boys(arena, method):
         the_boys = all_the_boys()
     elif method == 'pathfinding':
         the_boys = pathfinding_boy(arena)
+    elif method == 'goap':
+        the_boys = goap_boy(arena)
     arena.add_screen_objects(the_boys)

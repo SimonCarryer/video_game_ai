@@ -4,6 +4,7 @@ from eyes import Eyes
 from numpy.random import normal
 from frontal_lobe import FrontalLobe
 from memory import Memory
+import numpy as np
 import random
 
 
@@ -55,11 +56,14 @@ class Brain:
                                                                      current_velocity,
                                                                      target_position
                                                                      )
-        avoid_vector = self.hindbrain.avoid(current_position,
-                                            vector_to_target,
-                                            collision,
-                                            target_position=target_position
-                                            )
+        if not self.pathfind:
+            avoid_vector = self.hindbrain.avoid(current_position,
+                                                vector_to_target,
+                                                collision,
+                                                target_position=target_position
+                                                )
+        else:
+            avoid_vector = np.array((0, 0))
         arrive_factor = self.hindbrain.arrive_factor(current_position, current_velocity, target_position)
         return normalise_vector(vector_to_target + avoid_vector) * arrive_factor
 

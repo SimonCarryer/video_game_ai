@@ -1,0 +1,35 @@
+{
+"states": ["has_item", "at_counter", "paid_for_item", "at_exit", "at_item"],
+"actions": [
+    {"name": "go_to_item", 
+    "conditions": {"at_item": false},
+    "reactions":{"at_item": true, "at_counter": false, "at_exit": false},
+    "type": "go_to",
+    "goal":[0, 0]
+    },
+    {"name": "get_item",
+    "conditions":{"at_item": true, "has_item": false},
+    "reactions":{"has_item": true},
+    "type": "perform"
+    },
+    {"name": "go_to_counter",
+        "conditions":{"at_counter": false},
+        "reactions":{"at_item": false, "at_counter": true, "at_exit": false},
+        "type": "go_to",
+        "goal":[0, 0]
+        },
+    {"name": "pay_for_item",
+    "conditions":{"at_counter": true, "has_item": true},
+    "reactions":{"paid_for_item": true},
+    "type": "perform"
+    },
+    {"name": "go_to_exit",
+        "conditions":{"at_exit": false},
+        "reactions":{"at_item": false, "at_counter": false, "at_exit": true},
+        "type": "go_to",
+        "goal":[0, 0]
+        }
+]
+}
+
+    

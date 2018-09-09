@@ -232,3 +232,8 @@ def filter_threatening_walls(circle_coords, circle_radius, list_of_walls):
     fil = (distances_to_wall < threat_range)[0]
     return list(compress(list_of_walls, fil))
 
+
+def point_inside_rectangle(rectangle, point):
+    x, y = point[0], point[1]
+    x1, x2, y1, y2 = rectangle[0][0], rectangle[1][0], rectangle[0][1], rectangle[1][1]
+    return x1 < x < x2 and y1 < y < y2

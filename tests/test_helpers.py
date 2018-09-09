@@ -219,3 +219,11 @@ def test_filter_threatening_walls():
     circle_radius = 3
     threatening_walls = filter_threatening_walls(circle_coords, circle_radius, [wall, wall_2])
     assert threatening_walls == [wall]
+
+
+def test_inside_circle():
+    rect = np.array([[0, 0], [100, 100]])
+    point = np.array([50, 50])
+    assert point_inside_rectangle(rect, point)
+    other_point = np.array([150, 50])
+    assert not point_inside_rectangle(rect, other_point)

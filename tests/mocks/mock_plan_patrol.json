@@ -1,0 +1,33 @@
+{
+    "states": ["at_point_1", "at_point_2", "at_point_3", "at_point_4", 
+                "visited_point_1", "visited_point_2", "visited_point_3", "visited_point_4"],
+    "actions": [
+        {"name": "go_to_point_1", 
+        "conditions": {"at_point_1": false},
+        "reactions":{"visited_point_1": true, "at_point_1": true, "at_point_2": false, "at_point_3": false, "at_point_4": false},
+        "type": "go_to",
+        "goal": [10, 10]
+        },
+        {"name": "go_to_point_2", 
+        "conditions": {"at_point_2": false, "visited_point_1": true},
+        "reactions":{"visited_point_2": true, "at_point_1": false, "at_point_2": true, "at_point_3": false, "at_point_4": false},
+        "type": "go_to",
+        "goal": [10, 500]
+        },
+        {"name": "go_to_point_3", 
+        "conditions": {"at_point_3": false, "visited_point_1": true, "visited_point_2": true},
+        "reactions": {"visited_point_3": true, "at_point_1": false, "at_point_2": false, "at_point_3": true, "at_point_4": false},
+        "type": "go_to",
+        "goal": [500, 500]
+        },
+        {"name": "go_to_point_4", 
+        "conditions": {"at_point_4": false, "visited_point_1": true, "visited_point_2": true, "visited_point_3": true},
+        "reactions": {"visited_point_4": true, "at_point_1": false, "at_point_2": false, "at_point_3": false, "at_point_4": true},
+        "type": "go_to",
+        "goal": [500, 10]
+        }
+    ]
+    }
+    
+        
+    
