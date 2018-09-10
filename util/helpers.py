@@ -196,16 +196,16 @@ def unobstructed_edges(edges_vector, wall_vector):
     walls_product = np.tile(np.transpose(wall_vector), len(edges_vector))
     edges_product = np.transpose(np.repeat(edges_vector, len(wall_vector), axis=0))
     a = (edges_product[3] - walls_product[1]) * (edges_product[0] - walls_product[0])\
-        > (edges_product[1] - walls_product[1]) * (edges_product[2] - walls_product[0])
+        >= (edges_product[1] - walls_product[1]) * (edges_product[2] - walls_product[0])
 
     b = (edges_product[3] - walls_product[3]) * (edges_product[0] - walls_product[2])\
-        > (edges_product[1] - walls_product[3]) * (edges_product[2] - walls_product[2])
+        >= (edges_product[1] - walls_product[3]) * (edges_product[2] - walls_product[2])
 
     c = (edges_product[1] - walls_product[1]) * (walls_product[2] - walls_product[0])\
-        > (walls_product[3] - walls_product[1]) * (edges_product[0] - walls_product[0])
+        >= (walls_product[3] - walls_product[1]) * (edges_product[0] - walls_product[0])
 
     d = (edges_product[3] - walls_product[1]) * (walls_product[2] - walls_product[0])\
-        > (walls_product[3] - walls_product[1]) * (edges_product[2] - walls_product[0])
+        >= (walls_product[3] - walls_product[1]) * (edges_product[2] - walls_product[0])
     intersections = ~((a != b) & (c != d))
     return np.array([i.all() for i in np.split(intersections, len(edges_vector))])
 

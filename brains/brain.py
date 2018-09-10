@@ -18,10 +18,11 @@ class Brain:
         self.update = self.dumb_update
 
     def dumb_update(self, current_position, list_of_game_objects):
-        pass
+        self.eyes.update(list_of_game_objects)
 
     def smart_update(self, current_position, list_of_game_objects):
-        visible = self.eyes.visible_objects(current_position, list_of_game_objects)
+        self.eyes.update(list_of_game_objects)
+        visible = self.eyes.visible_objects(current_position)
         self.memory.remember_walls(visible)
         self.frontal_lobe.update_grid(self.memory.known_walls)
 
@@ -114,11 +115,11 @@ class Brain:
         else:
             goal = self.eyes.look_for_object(current_position,
                                              self.target_range,
-                                             self.target,
-                                             list_of_game_objects)
+                                             self.target
+                                             )
             if goal is not None:
                 goal_position = goal.coords()
-        if goal_position is not None and self.pathfind and not self.eyes.direct_path_to_goal(current_position, goal_position, list_of_game_objects):
+        if goal_position is not None and self.pathfind and not self.eyes.direct_path_to_goal(current_position, goal_position):
             goal_position = self.frontal_lobe.pathfind_goal(current_position, goal_position)
         return goal_position
 
@@ -130,8 +131,8 @@ class Brain:
                                   list_of_game_objects)
         collision = self.eyes.look_for_collisions(current_position,
                                                   current_velocity,
-                                                  self.self_image['radius'],
-                                                  list_of_game_objects)
+                                                  self.self_image['radius']
+                                                  )
         if goal is not None:
             vector = self.target_behaviour(goal,
                                         current_position,
