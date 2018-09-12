@@ -9,3 +9,8 @@ class MockBody:
 class MockEyes:
     def __init__(self):
         pass
+
+
+class MockMemory:
+    def __init__(self):
+        pass

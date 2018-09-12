@@ -1,5 +1,19 @@
 {
-"states": ["has_item", "at_counter", "paid_for_item", "at_exit", "at_item"],
+"states": [
+    {"name": "has_item",
+    "type": "set_by_action"}, 
+    {"name": "at_counter",
+    "type": "in_location",
+    "rect": [[50, 50], [100, 60]]},
+    {"name": "paid_for_item",
+    "type": "set_by_action"}, 
+    {"name": "at_exit",
+    "type": "at_point",
+    "point": [0, 0]},
+    {"name": "at_item",
+    "type": "close_to_object",
+    "distance": 10,
+    "object_description": {"kind": "item"}}],
 "actions": [
     {"name": "go_to_item", 
     "conditions": {"at_item": false},

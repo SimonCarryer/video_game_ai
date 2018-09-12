@@ -1,4 +1,5 @@
 from util.helpers import just_walls
+from collections import defaultdict
 
 
 class Memory:
