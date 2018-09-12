@@ -9,7 +9,8 @@ import random
 
 
 class Brain:
-    def __init__(self, image):
+    def __init__(self, body, image):
+        self.body = body
         self.hindbrain = Hindbrain()
         self.eyes = Eyes()
         self.parse_behaviour(image.get('behaviour', {}))
@@ -17,12 +18,12 @@ class Brain:
         self.wander_value = 0
         self.update = self.dumb_update
 
-    def dumb_update(self, current_position, list_of_game_objects):
+    def dumb_update(self, list_of_game_objects):
         self.eyes.update(list_of_game_objects)
 
-    def smart_update(self, current_position, list_of_game_objects):
+    def smart_update(self, list_of_game_objects):
         self.eyes.update(list_of_game_objects)
-        visible = self.eyes.visible_objects(current_position)
+        visible = self.eyes.visible_objects(self.body.coords)
         self.memory.remember_walls(visible)
         self.frontal_lobe.update_grid(self.memory.known_walls)
 
@@ -43,42 +44,40 @@ class Brain:
         else:
             self.target_behaviour = self.wander
 
-    def remember_what_you_see(self, current_position, list_of_game_objects):
-        visible = self.eyes.visible_objects(current_position, list_of_game_objects)
+    def remember_what_you_see(self, list_of_game_objects):
+        visible = self.eyes.visible_objects(self.body.coords, list_of_game_objects)
         self.memory.remember_walls(visible)
         self.frontal_lobe.populate_grid(self.memory.known_walls)
 
     def seek(self,
              target_position,
-             current_position,
-             current_velocity,
              collision):
-        vector_to_target = self.hindbrain.calculate_vector_to_target(current_position,
-                                                                     current_velocity,
+        vector_to_target = self.hindbrain.calculate_vector_to_target(self.body.coords,
+                                                                     self.body.velocity,
                                                                      target_position
                                                                      )
         if not self.pathfind:
-            avoid_vector = self.hindbrain.avoid(current_position,
+            avoid_vector = self.hindbrain.avoid(self.body.coords,
                                                 vector_to_target,
                                                 collision,
                                                 target_position=target_position
                                                 )
         else:
             avoid_vector = np.array((0, 0))
-        arrive_factor = self.hindbrain.arrive_factor(current_position, current_velocity, target_position)
+        arrive_factor = self.hindbrain.arrive_factor(self.body.coords,
+                                                     self.body.velocity,
+                                                     target_position)
         return normalise_vector(vector_to_target + avoid_vector) * arrive_factor
 
     def flee(self,
              scary_thing,
-             current_position,
-             current_velocity,
              collision):
-        vector_to_target = self.hindbrain.calculate_vector_to_target(current_position,
-                                                                     current_velocity,
+        vector_to_target = self.hindbrain.calculate_vector_to_target(self.body.coords,
+                                                                     self.body.velocity,
                                                                      scary_thing
                                                                      )
         vector = -vector_to_target
-        avoid_vector = self.hindbrain.avoid(current_position,
+        avoid_vector = self.hindbrain.avoid(self.body.coords,
                                             vector,
                                             collision,
                                             target_position=None
@@ -87,12 +86,10 @@ class Brain:
 
     def wander(self,
                goal,
-               current_position,
-               current_velocity,
                collision):
         if collision is not None:
-            vector = self.hindbrain.calculate_vector_to_target(current_position,
-                                                               current_velocity,
+            vector = self.hindbrain.calculate_vector_to_target(self.body.coords,
+                                                               self.body.velocity,
                                                                collision['intersection'])
             return -vector
         change_chance = 0.07
@@ -105,7 +102,6 @@ class Brain:
         return vector
 
     def goal_position(self,
-                      current_position,
                       list_of_game_objects):
         goal_position = None
         if self.target == 'mouse pointer':
@@ -113,35 +109,28 @@ class Brain:
         if self.target is None:
             goal_position = None
         else:
-            goal = self.eyes.look_for_object(current_position,
+            goal = self.eyes.look_for_object(self.body.coords,
                                              self.target_range,
                                              self.target
                                              )
             if goal is not None:
                 goal_position = goal.coords()
-        if goal_position is not None and self.pathfind and not self.eyes.direct_path_to_goal(current_position, goal_position):
-            goal_position = self.frontal_lobe.pathfind_goal(current_position, goal_position)
+        if goal_position is not None and self.pathfind and not self.eyes.direct_path_to_goal(self.body.coords, goal_position):
+            goal_position = self.frontal_lobe.pathfind_goal(self.body.coords, goal_position)
         return goal_position
 
     def get_goal_vector(self,
-                        current_position,
-                        current_velocity,
                         list_of_game_objects):
-        goal = self.goal_position(current_position,
-                                  list_of_game_objects)
-        collision = self.eyes.look_for_collisions(current_position,
-                                                  current_velocity,
+        goal = self.goal_position(list_of_game_objects)
+        collision = self.eyes.look_for_collisions(self.body.coords,
+                                                  self.body.velocity,
                                                   self.self_image['radius']
                                                   )
         if goal is not None:
             vector = self.target_behaviour(goal,
-                                        current_position,
-                                        current_velocity,
-                                        collision)
+                                           collision)
         else:
              vector = self.wander(goal,
-                                  current_position,
-                                  current_velocity,
                                   collision)           
         return vector
 
