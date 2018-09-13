@@ -20,14 +20,19 @@ def create_plan(plan_manifest):
     plan.set_action_list(actions)
     return plan
 
+action_dict = {
+    'go_to': GoToAction,
+    'action': Action
+}
+
 
 def parse_actions(plan_manifest):
-    action_dict = {}
+    actions = {}
     for action in plan_manifest['actions']:
-        if action['type'] == 'go_to':
-            action_object = GoToAction(action['goal'])
-        action_dict[action['name']] = action_object
-    return action_dict
+        obj = action_dict[action['type']]
+        stripped_action = {k: v for k, v in action.items() if k not in ['name', 'type']}
+        actions[action['name']] = obj(**stripped_action)
+    return actions
 
 state_dict = {
     "at_point": AtPointState,

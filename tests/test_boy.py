@@ -16,7 +16,7 @@ def test_boy_has_unique_name():
 
 
 def test_initialise_frontal_lobe():
-    boy = Boy((100, 100), (20, 0), 'tootling boy')
+    boy = Boy((100, 100), (20, 0), 'pathfinding boy')
     wall = Wall((12, 12), (12, 32))
     wall2 = Wall((12, 12), (12, 14))
     boy.initialise_frontal_lobe(100, 100, [wall, wall2], grid_spacing=20)

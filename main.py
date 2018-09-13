@@ -14,7 +14,7 @@ screen = pygame.display.set_mode((640, 640), winstyle, bestdepth)
 
 arena = Arena(SCREENRECT)
 
-method = 'pathfinding'
+method = 'goap'
 
 initialise_walls(arena, method)
 initialise_boys(arena, method)

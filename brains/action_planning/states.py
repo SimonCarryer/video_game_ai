@@ -1,14 +1,27 @@
 from util.helpers import *
+import numpy as np
 
 
 class State(object):
-    def __init__(self, name, body, eyes):
+    def __init__(self, name, body, eyes, sticky=True):
         self.eyes = eyes
         self.body = body
         self.name = name
+        self.fulfilled = False
+        self.sticky = sticky
+
+    def status(self):
+        if self.sticky:
+            if self.is_fulfilled():
+                self.fulfilled = True
+                return True
+            else:
+                return self.fulfilled
+        else:
+            return self.is_fulfilled()
 
     def is_fulfilled(self):
-        return False
+        return self.fulfilled
 
 
 class LocationState(State):
@@ -52,7 +65,7 @@ class ObjectInLocationState(State):
 class AtPointState(State):
     def __init__(self, name, body, eyes, point):
         super(AtPointState, self).__init__(name, body, eyes)
-        self.point = point
+        self.point = np.array(point)
 
     def is_fulfilled(self):
         distance = distance_between_points(self.point, self.body.coords)

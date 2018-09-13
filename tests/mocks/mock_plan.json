@@ -24,7 +24,7 @@
     {"name": "get_item",
     "conditions":{"at_item": true, "has_item": false},
     "reactions":{"has_item": true},
-    "type": "perform"
+    "type": "action"
     },
     {"name": "go_to_counter",
         "conditions":{"at_counter": false},
@@ -35,7 +35,7 @@
     {"name": "pay_for_item",
     "conditions":{"at_counter": true, "has_item": true},
     "reactions":{"paid_for_item": true},
-    "type": "perform"
+    "type": "action"
     },
     {"name": "go_to_exit",
         "conditions":{"at_exit": false},

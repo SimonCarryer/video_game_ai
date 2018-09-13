@@ -2,13 +2,12 @@ from hindbrain import Hindbrain
 from util.helpers import *
 from eyes import Eyes
 from numpy.random import normal
-from frontal_lobe import FrontalLobe
-from memory import Memory
+from action_planning.actions import *
 import numpy as np
 import random
 
 
-class Brain:
+class Brain(object):
     def __init__(self, body, image):
         self.body = body
         self.hindbrain = Hindbrain()
@@ -16,33 +15,19 @@ class Brain:
         self.parse_behaviour(image.get('behaviour', {}))
         self.self_image = image
         self.wander_value = 0
-        self.update = self.dumb_update
 
-    def dumb_update(self, list_of_game_objects):
+    def update(self, list_of_game_objects):
         self.eyes.update(list_of_game_objects)
-
-    def smart_update(self, list_of_game_objects):
-        self.eyes.update(list_of_game_objects)
-        visible = self.eyes.visible_objects(self.body.coords)
-        self.memory.remember_walls(visible)
-        self.frontal_lobe.update_grid(self.memory.known_walls)
-
-    def initialise_frontal_lobe(self, arena_height, arena_width, grid_spacing, list_of_game_objects):
-        self.update = self.smart_update
-        self.memory = Memory()
-        self.frontal_lobe = FrontalLobe(arena_height, arena_width, grid_spacing)
-        self.frontal_lobe.populate_grid(list_of_game_objects)
 
     def parse_behaviour(self, behaviour_dict):
         self.target = behaviour_dict.get('target')
         self.pathfind = behaviour_dict.get('pathfind', False)
         self.target_range = behaviour_dict.get('target range')
+        self.action = Action()
         if behaviour_dict.get('target behaviour') == 'seek':
-            self.target_behaviour = self.seek
+            self.action = SeekAction(behaviour_dict.get('target'))
         elif behaviour_dict.get('target behaviour') == 'flee':
-            self.target_behaviour = self.flee
-        else:
-            self.target_behaviour = self.wander
+            self.action = FleeAction(behaviour_dict.get('target'))
 
     def remember_what_you_see(self, list_of_game_objects):
         visible = self.eyes.visible_objects(self.body.coords, list_of_game_objects)
@@ -96,22 +81,22 @@ class Brain:
         turn_force = 0.7
         if random.uniform(0, 1) < change_chance:
             self.wander_value = random.choice([-2, -1, 0, 0, 1, 2]) * turn_force
-        wander_force = (normalise_vector(perpendicular_vector(current_velocity))
+        wander_force = (normalise_vector(perpendicular_vector(self.body.velocity))
                         ) * self.wander_value
-        vector = normalise_vector(current_velocity + wander_force)
+        vector = normalise_vector(self.body.velocity + wander_force)
         return vector
 
     def goal_position(self,
                       list_of_game_objects):
         goal_position = None
-        if self.target == 'mouse pointer':
+        if self.action.target() == 'mouse pointer':
             goal_position = self.eyes.get_mouse_position()
-        if self.target is None:
-            goal_position = None
+        if self.action.target() is None:
+            goal_position = self.action.goal()
         else:
             goal = self.eyes.look_for_object(self.body.coords,
                                              self.target_range,
-                                             self.target
+                                             self.action.target()
                                              )
             if goal is not None:
                 goal_position = goal.coords()
@@ -127,10 +112,12 @@ class Brain:
                                                   self.self_image['radius']
                                                   )
         if goal is not None:
-            vector = self.target_behaviour(goal,
-                                           collision)
+            if self.action.behaviour() == 'seek':
+                vector = self.seek(goal, collision)
+            elif self.action.behaviour() == 'flee':
+                vector = self.flee(goal, collision)
         else:
              vector = self.wander(goal,
-                                  collision)           
+                                  collision)
         return vector
 

@@ -15,20 +15,20 @@ class PlanInterpreter():
         self.states = parse_states(manifest, body, eyes)
         self.state = start_state
         self.goal = goal_state
-        self.path = self.formulate_plan()
+        self.formulate_plan()
 
     def formulate_plan(self):
         self.planner.set_start_state(**self.state)
         self.planner.set_goal_state(**self.goal)
-        return self.planner.calculate()
+        self.path = self.planner.calculate()
 
     def update_state(self):
         for state in self.states:
-            self.state[state.name] = state.is_fulfilled()
+            self.state[state.name] = state.status()
+        current_action = self.current_action()
+        if current_action.succeed(self.state):
+            current_action.reactions
 
     def current_action(self):
         action = self.path[0]['name']
         return self.action_dict[action]
-
-    def goal_achieved(self):
-        self.path = self.path[1:]

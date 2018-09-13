@@ -1,6 +1,8 @@
 from screen_objects.screen_object import ScreenObject
 from bodies.body import Body
 from brains.brain import Brain
+from brains.pathfinding_brain import PathFindingBrain
+from brains.action_planning_brain import ActionPlanningBrain
 from screen_objects.boy_recipes import boy_cookbook
 
 
@@ -10,13 +12,18 @@ class Boy(ScreenObject):
         recipe = boy_cookbook.get_recipe(boy_type)
         self.body = Body(coords, initial_velocity, recipe)
         self.image = recipe
-        self.brain = Brain(self.body, recipe)
+        if recipe['behaviour'].get('pathfind'):
+            self.brain = PathFindingBrain(self.body, recipe)
+        elif recipe['behaviour'].get('goap'):
+            self.brain = ActionPlanningBrain(self.body, recipe)
+        else: 
+            self.brain = Brain(self.body, recipe)
 
     def initialise_frontal_lobe(self, arena_height, arena_width, list_of_game_objects, grid_spacing=640/12):
         self.brain.initialise_frontal_lobe(arena_height, arena_width, grid_spacing, list_of_game_objects)
 
     def collide(self, colliding_object):
-        return self.substance.collide(colliding_object)
+        return self.body.substance.collide(colliding_object)
 
     def coords(self):
         return self.body.coords
