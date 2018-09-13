@@ -2,12 +2,12 @@ import numpy as np
 
 
 class Action(object):
-    def __init__(self, reactions=None, conditions=None):
+    def __init__(self, reactions={}, conditions={}):
         self.reactions = reactions,
         self.conditions = conditions
 
     def succeed(self, state):
-        return state.viewitems() <= self.conditions.viewitems()
+        return self.conditions.viewitems() <= state.viewitems()
 
     def behaviour(self):
         return 'seek'

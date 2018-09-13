@@ -24,9 +24,9 @@ boy_recipes['patrol boy'] = {
     'kind': 'boy',
     'radius': 8,
     'colour': (220, 0, 0),
-    'behaviour': {'plan_file': 'tests/mocks/mock_plan_patrol.json',
-                  'start': {"at_point_1": False, "at_point_2": False, "at_point_3": False, "at_point_4": False, "patrol_complete": False},
-                  'goal': {"patrol_complete": True},
+    'behaviour': {'plan_file': 'brains/action_planning/plan_files/patrol.json',
+                  'start': {"at_point_1": False, "at_point_2": False, "at_point_3": False, "at_point_4": False},
+                  'goal': {"at_point_1": True, "at_point_2": True, "at_point_3": True, "at_point_4": True},
                   'goap': True},
     'accelleration': 4
 }

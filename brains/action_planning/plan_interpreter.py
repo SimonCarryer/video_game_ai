@@ -1,5 +1,6 @@
 from .goap import Planner, Action_List
 from plan_builder import *
+from .actions import Action
 
 
 class PlanInterpreter():
@@ -28,7 +29,19 @@ class PlanInterpreter():
         current_action = self.current_action()
         if current_action.succeed(self.state):
             current_action.reactions
+        if self.succeed():
+            self.set_sticky_states_to_false()
+
+    def set_sticky_states_to_false(self):
+        for state in self.states:
+            state.fulfilled = False
+
+    def succeed(self):
+        return self.goal.viewitems() <= self.state.viewitems()
 
     def current_action(self):
-        action = self.path[0]['name']
-        return self.action_dict[action]
+        if len(self.path) > 0:
+            action = self.path[0]['name']
+            return self.action_dict[action]
+        else:
+            return Action()
