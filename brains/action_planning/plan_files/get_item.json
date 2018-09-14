@@ -1,0 +1,20 @@
+{
+    "states":[
+        {"name": "can_see_item",
+        "type": "close_to_object",
+        "object_description": {"kind": "item"},
+        "distance": 100,
+        "sticky": false},
+        {"name": "at_item",
+        "type": "close_to_object",
+        "object_description": {"kind": "item"},
+        "distance": 1}
+    ],
+    "actions": [
+        {"name": "go_to_item",
+        "type": "seek",
+        "target_description": {"kind": "item"},
+        "conditions": {"can_see_item": true},
+        "reactions": {"at_item": true}}
+    ]
+}

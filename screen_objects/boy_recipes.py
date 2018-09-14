@@ -31,6 +31,19 @@ boy_recipes['patrol boy'] = {
     'accelleration': 4
 }
 
+boy_recipes['item boy'] = {
+    'kind': 'boy',
+    'radius': 8,
+    'colour': (200, 100, 0),
+    'behaviour': {'plan_file': 'brains/action_planning/plan_files/get_item.json',
+                  'start': {"can_see_item": False, "at_item": False},
+                  'goal': {"at_item": True},
+                  'target range': 300,
+                  'goap': True},
+    'accelleration': 4
+}
+
+
 boy_recipes['hungry boy'] = {
     'kind': 'boy',
     'radius': 8,

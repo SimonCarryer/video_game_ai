@@ -25,8 +25,8 @@ class State(object):
 
 
 class LocationState(State):
-    def __init__(self, name, body, eyes, rect):
-        super(LocationState, self).__init__(name, body, eyes)
+    def __init__(self, name, body, eyes, rect, sticky=True):
+        super(LocationState, self).__init__(name, body, eyes, sticky)
         self.rect = rect
 
     def is_fulfilled(self):
@@ -34,8 +34,8 @@ class LocationState(State):
 
 
 class SeeObjectState(State):
-    def __init__(self, name, body, eyes, distance, object_description):
-        super(SeeObjectState, self).__init__(name, body, eyes)
+    def __init__(self, name, body, eyes, distance, object_description, sticky=True):
+        super(SeeObjectState, self).__init__(name, body, eyes, sticky)
         self.distance = distance
         self.object_description = object_description
 
@@ -48,8 +48,8 @@ class SeeObjectState(State):
 
 
 class ObjectInLocationState(State):
-    def __init__(self, name, body, eyes, rect, distance, object_description):
-        super(ObjectInLocationState, self).__init__(name, body, eyes)
+    def __init__(self, name, body, eyes, rect, distance, object_description, sticky=True):
+        super(ObjectInLocationState, self).__init__(name, body, eyes, sticky)
         self.distance = distance
         self.object_description = object_description
         self.rect = rect
@@ -63,8 +63,8 @@ class ObjectInLocationState(State):
 
 
 class AtPointState(State):
-    def __init__(self, name, body, eyes, point):
-        super(AtPointState, self).__init__(name, body, eyes)
+    def __init__(self, name, body, eyes, point, sticky=True):
+        super(AtPointState, self).__init__(name, body, eyes, sticky)
         self.point = np.array(point)
 
     def is_fulfilled(self):
@@ -73,8 +73,8 @@ class AtPointState(State):
 
 
 class SetByActionState(State):
-    def __init__(self, name, body, eyes):
-        super(SetByActionState, self).__init__(name, body, eyes)
+    def __init__(self, name, body, eyes, sticky=True):
+        super(SetByActionState, self).__init__(name, body, eyes, sticky)
         self.fulfilled = False
 
     def is_fulfilled(self):

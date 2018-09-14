@@ -11,6 +11,10 @@ class Arena:
         for screen_object in screen_objects:
             self.screen_objects.append(screen_object)
 
+    def delete_screen_objects(self):
+        self.screen_objects = [obj for obj in self.screen_objects if not obj.delete]
+
     def update_screen_objects(self, screen):
         for screen_object in self.screen_objects:
             screen_object.update(screen, self.screen_objects)
+        self.delete_screen_objects()

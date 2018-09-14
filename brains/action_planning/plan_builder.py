@@ -22,7 +22,8 @@ def create_plan(plan_manifest):
 
 action_dict = {
     'go_to': GoToAction,
-    'action': Action
+    'action': Action,
+    'seek': SeekAction
 }
 
 

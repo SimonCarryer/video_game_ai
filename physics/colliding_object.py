@@ -5,6 +5,7 @@ class Colliding(object):
     def __init__(self, coords):
         self.coords = coords
         self.collide_type = None
+        self.image = {}
 
     def possible_collisions(self, list_of_screen_objects):
         return list_of_screen_objects
