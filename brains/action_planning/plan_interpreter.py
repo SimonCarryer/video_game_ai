@@ -9,19 +9,30 @@ class PlanInterpreter():
                  eyes,
                  plan_file_path,
                  start_state,
-                 goal_state):
-        manifest = manifest_from_file(plan_file_path)
-        self.planner = create_plan(manifest)
-        self.action_dict = parse_actions(manifest)
-        self.states = parse_states(manifest, body, eyes)
+                 priorities):
+        self.manifest = manifest_from_file(plan_file_path)
+        self.planner = create_plan(self.manifest)
+        self.action_dict = parse_actions(self.manifest)
+        self.states = parse_states(self.manifest, body, eyes)
         self.state = start_state
-        self.goal = goal_state
-        self.formulate_plan()
+        self.priorities = priorities
+        self.goal = self.manifest['goals'][priorities[0]]
+        self.path = self.formulate_plan()
 
-    def formulate_plan(self):
+    def determine_goal(self):
+        for priority in self.priorities:
+            goal = self.manifest['goals'][priority]
+            plan = self.formulate_plan(goal=goal)
+            if len(plan) > 0:
+                self.goal = goal
+                break
+
+    def formulate_plan(self, goal=None):
+        if goal is None:
+            goal = self.goal
         self.planner.set_start_state(**self.state)
-        self.planner.set_goal_state(**self.goal)
-        self.path = self.planner.calculate()
+        self.planner.set_goal_state(**goal)
+        return self.planner.calculate()
 
     def update_state(self):
         for state in self.states:
@@ -32,9 +43,16 @@ class PlanInterpreter():
         if self.succeed():
             self.set_sticky_states_to_false()
 
+    def update(self):
+        self.update_state()
+        self.determine_goal()
+        self.path = self.formulate_plan()
+
     def set_sticky_states_to_false(self):
+        completed_goals = [i for i in self.goal.keys()]
         for state in self.states:
-            state.fulfilled = False
+            if state.name in completed_goals:
+                state.fulfilled = False
 
     def succeed(self):
         return self.goal.viewitems() <= self.state.viewitems()

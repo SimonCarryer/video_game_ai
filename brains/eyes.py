@@ -18,7 +18,8 @@ class EyeBeam(Colliding):
 
 
 class Eyes:
-    def __init__(self):
+    def __init__(self, view_distance=200):
+        self.view_distance = view_distance
         self.look_ahead = 10
         self.list_of_game_objects = []
 
@@ -64,12 +65,11 @@ class Eyes:
 
     def look_for_object(self,
                         coords,
-                        distance,
                         object_description):
         matching_objects_in_range = [screen_object for screen_object in \
                             self.list_of_game_objects \
                             if screen_object.image['kind'] != 'wall'
-                            and distance_between_points(coords, screen_object.coords()) < distance \
+                            and distance_between_points(coords, screen_object.coords()) < self.view_distance \
                             and object_description.viewitems() <= screen_object.image.viewitems()]
         if len(matching_objects_in_range) > 0:
             closest_index = find_closest_point_index(coords, [screen_object.coords() for screen_object in matching_objects_in_range])

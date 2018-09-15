@@ -30,3 +30,15 @@ class VisibleLine(pygame.sprite.Sprite):
                          self.start_position, 
                          self.end_position,
                          2)
+
+
+class VisibleRect(pygame.sprite.Sprite):
+    def __init__(self, rect, colour=(0, 220, 0)):
+        super(VisibleRect, self).__init__()
+        self.rect = pygame.Rect(*rect)
+        self.colour = colour
+
+    def draw(self, screen):
+        pygame.draw.rect(screen, 
+                         self.colour,
+                         self.rect)

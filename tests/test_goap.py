@@ -21,10 +21,10 @@ def test_creating_planner_object():
 def test_initialise_interpreter():
     file_path = 'tests/mocks/mock_plan.json'
     start = {'has_item': False, 'at_counter': False, 'paid_for_item': False, 'at_exit': False, 'at_item': False}
-    goal = {'has_item': True, 'paid_for_item': True, 'at_exit': True}
+    priorities = ['buy_item']
     body = MockBody()
     eyes = MockEyes()
-    interpreter = PlanInterpreter(body, eyes, file_path, start, goal)
+    interpreter = PlanInterpreter(body, eyes, file_path, start, priorities)
     desired = [u'go_to_item', u'get_item', u'go_to_counter', u'pay_for_item', u'go_to_exit']
     assert [node['name'] for node in interpreter.path] == desired
 
@@ -39,10 +39,10 @@ def test_build_action_dict():
 def test_get_action():
     file_path = 'tests/mocks/mock_plan_patrol.json'
     start = {"at_point_1": True, "at_point_2": False, "at_point_3": False, "at_point_4": False}
-    goal = {"at_point_1": True, "at_point_2": True, "at_point_3": True, "at_point_4": True}
+    priorities = ['complete_patrol']
     body = MockBody()
     eyes = MockEyes()
-    interpreter = PlanInterpreter(body, eyes, file_path, start, goal)
+    interpreter = PlanInterpreter(body, eyes, file_path, start, priorities)
     action = interpreter.current_action()
     assert (action.goal() == [10, 500]).all()
 
@@ -58,18 +58,17 @@ def test_parse_states():
     assert (state.point == [0, 0]).all()
 
 
-def test_update_state():
+def test_update():
     file_path = 'tests/mocks/mock_plan_patrol.json'
     start = {"at_point_1": False, "at_point_2": False, "at_point_3": False, "at_point_4": False}
-    goal = {"at_point_1": True, "at_point_2": True, "at_point_3": True, "at_point_4": True}
+    priorities = ["complete_patrol"]
     body = MockBody()
     eyes = MockEyes()
-    interpreter = PlanInterpreter(body, eyes, file_path, start, goal)
+    interpreter = PlanInterpreter(body, eyes, file_path, start, priorities)
     action = interpreter.current_action()
     assert (action.goal() == [10, 10]).all()
     body.coords = [10, 10]
-    interpreter.update_state()
-    interpreter.formulate_plan()
+    interpreter.update()
     action = interpreter.current_action()
     assert (action.goal() == [10, 500]).all()
 
@@ -87,3 +86,15 @@ def test_action_succeed():
     assert not action.succeed(state)
     state = {'test_condition': False}
     assert not action.succeed(state)
+
+
+def test_determine_goal():
+    file_path = 'tests/mocks/mock_plan_patrol.json'
+    start = {"at_point_1": False, "at_point_2": False, "at_point_3": False, "at_point_4": False}
+    priorities = ["do_the_impossible", "complete_patrol"]
+    body = MockBody()
+    eyes = MockEyes()
+    interpreter = PlanInterpreter(body, eyes, file_path, start, priorities)
+    assert interpreter.goal == {u'impossible_state': True}
+    interpreter.determine_goal()
+    assert interpreter.goal == {u'at_point_4': True, u'at_point_3': True, u'at_point_2': True, u'at_point_1': True}

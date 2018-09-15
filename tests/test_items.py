@@ -11,7 +11,7 @@ def test_item_can_be_seen():
     eyes.update(list_of_game_objects)
     coords = np.array((0, 0))
     assert len(eyes.visible_objects(coords)) == 1
-    assert eyes.look_for_object(coords, 100, {'kind': 'item'}) == item
+    assert eyes.look_for_object(coords, {'kind': 'item'}) == item
 
 
 def test_item_gets_picked_up():

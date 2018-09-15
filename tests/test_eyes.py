@@ -98,7 +98,7 @@ def test_looking_for_something():
     coords = np.array((10.0, 30.0))
     list_of_game_objects = [boy]
     eyes.update(list_of_game_objects)
-    seen = eyes.look_for_object(coords, 200, {})
+    seen = eyes.look_for_object(coords, {})
     assert seen.image['kind'] == 'boy'
 
 
@@ -110,7 +110,7 @@ def test_looking_for_something_in_particular():
     coords = np.array((10.0, 30.0))
     list_of_game_objects = [boy, other_boy]
     eyes.update(list_of_game_objects)
-    seen = eyes.look_for_object(coords, 200, {'eyes': 'kind'})
+    seen = eyes.look_for_object(coords, {'eyes': 'kind'})
     assert seen.image['eyes'] == 'kind'
 
 
@@ -121,7 +121,7 @@ def test_looking_for_closest_thing():
     coords = np.array((10.0, 30.0))
     list_of_game_objects = [boy, other_boy]
     eyes.update(list_of_game_objects)
-    seen = eyes.look_for_object(coords, 200, {})
+    seen = eyes.look_for_object(coords, {})
     assert (seen.coords() == (100.0, 100.0)).all()
 
 
@@ -133,7 +133,7 @@ def test_looking_for_hidden_thing():
     coords = np.array((10.0, 30.0))
     list_of_game_objects = [boy, other_boy, wall]
     eyes.update(list_of_game_objects)
-    seen = eyes.look_for_object(coords, 200, {'kind': 'tootling boy'})
+    seen = eyes.look_for_object(coords, {'kind': 'tootling boy'})
     assert seen is None
 
 

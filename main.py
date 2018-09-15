@@ -29,6 +29,7 @@ def main(screen, arena):
                 return
         screen.fill((30, 30, 30))
         arena.update_screen_objects(screen)
+        arena.update_managers()
         pygame.display.flip()
         clock.tick_busy_loop(30)
 

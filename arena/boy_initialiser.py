@@ -1,5 +1,6 @@
 from screen_objects.boy import Boy
 from screen_objects.item import Item
+from item_manager.item_manager import ItemManager
 
 
 def pathfinding_boy(arena):
@@ -12,8 +13,7 @@ def goap_boys(arena):
     patrol_boy = Boy((200, 400), (20, 0), 'patrol boy')
     item_boy = Boy((100, 200), (20, 0), 'item boy')
     boy = Boy((100, 105), (20, 0), 'tootling boy')
-    item = Item((500, 500), (100, 100, 100))
-    return [patrol_boy, boy, item, item_boy]
+    return [patrol_boy, boy, item_boy]
 
 
 def all_the_boys():
@@ -31,4 +31,5 @@ def initialise_boys(arena, method):
         the_boys = pathfinding_boy(arena)
     elif method == 'goap':
         the_boys = goap_boys(arena)
+        arena.managers.append(ItemManager(arena))
     arena.add_screen_objects(the_boys)

@@ -39,7 +39,8 @@ state_dict = {
     "at_point": AtPointState,
     "set_by_action": SetByActionState,
     "in_location": LocationState,
-    "close_to_object": SeeObjectState
+    "see_object": SeeObjectState,
+    "close_to_object": CloseToObjectState
 }
 
 
@@ -49,6 +50,8 @@ def parse_states(plan_manifest, body, eyes):
         state_type = state.pop('type')
         state['eyes'] = eyes
         state['body'] = body
+        if state.get('location'):
+            state['rect'] = plan_manifest['locations'][state.pop('location')]
         obj = state_dict[state_type](**state)
         parsed_states.append(obj)
     return parsed_states

@@ -34,28 +34,41 @@ class LocationState(State):
 
 
 class SeeObjectState(State):
-    def __init__(self, name, body, eyes, distance, object_description, sticky=True):
+    def __init__(self, name, body, eyes, object_description, sticky=False):
         super(SeeObjectState, self).__init__(name, body, eyes, sticky)
-        self.distance = distance
         self.object_description = object_description
 
     def is_fulfilled(self):
-        seen = self.eyes.look_for_object(self.body.coords, self.distance, self.object_description)
+        seen = self.eyes.look_for_object(self.body.coords, self.object_description)
         if seen is not None:
             return True
         else:
             return False
 
 
-class ObjectInLocationState(State):
-    def __init__(self, name, body, eyes, rect, distance, object_description, sticky=True):
-        super(ObjectInLocationState, self).__init__(name, body, eyes, sticky)
+class CloseToObjectState(State):
+    def __init__(self, name, body, eyes, distance, object_description, sticky=False):
+        super(CloseToObjectState, self).__init__(name, body, eyes, sticky)
         self.distance = distance
+        self.object_description = object_description
+
+    def is_fulfilled(self):
+        seen = self.eyes.look_for_object(self.body.coords, self.object_description)
+        if seen is not None:
+            distance = distance_between_points(seen.coords(), self.body.coords)
+            return distance <= self.distance
+        else:
+            return False
+
+
+class ObjectInLocationState(State):
+    def __init__(self, name, body, eyes, rect, object_description, sticky=True):
+        super(ObjectInLocationState, self).__init__(name, body, eyes, sticky)
         self.object_description = object_description
         self.rect = rect
 
     def is_fulfilled(self):
-        seen = self.eyes.look_for_object(self.body.coords, self.distance, self.object_description)
+        seen = self.eyes.look_for_object(self.body.coords, self.object_description)
         if seen is not None:
             return point_inside_rectangle(self.rect, seen.coords())
         else:

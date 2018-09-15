@@ -1,5 +1,6 @@
 from screen_objects.wall import Wall, Boundary
 from random import shuffle, randrange
+from screen_objects.location import Location
 import numpy as np
 
 
@@ -67,13 +68,21 @@ def shape():
     return walls
 
 
+def locations():
+    ailse1 = Wall((100, 100), (100, 500))
+    ailse2 = Wall((200, 100), (200, 500))
+    ailse3 = Wall((300, 100), (300, 500))
+    location = Location(((100, 100), (150, 150)))
+    return [location, ailse1, ailse2, ailse3]
+
+
 def initialise_walls(arena, method):
     if method == 'steering':
         walls = shape()
     elif method == 'pathfinding':
         walls = maze()
     elif method == 'goap':
-        walls = []
+        walls = locations()
     bounds = [Boundary((0, 0), (arena.h, 0)),
               Boundary((arena.h, 0), (arena.h, arena.w)),
               Boundary((arena.h, arena.w), (0, arena.w)),

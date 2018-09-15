@@ -11,7 +11,16 @@
         "point": [600, 600]}, 
         {"name": "at_point_4",
         "type": "at_point",
-        "point": [600, 20]}],
+        "point": [600, 20]},
+        {"name": "can_see_item",
+        "type": "see_object",
+        "object_description": {"kind": "item"},
+        "sticky": false},
+        {"name": "at_item",
+        "type": "close_to_object",
+        "object_description": {"kind": "item"},
+        "distance": 5}
+    ],
 
     "actions": [
         {"name": "go_to_point_1", 
@@ -37,6 +46,16 @@
         "reactions": {"at_point_4": true},
         "type": "go_to",
         "goal": [600, 20]
-        }
-    ]
+        },
+        {"name": "go_to_item",
+        "type": "seek",
+        "target_description": {"kind": "item"},
+        "conditions": {"can_see_item": true},
+        "reactions": {"at_item": true}}
+    ],
+
+    "goals": {
+        "get_item": {"at_item": true},
+        "complete_patrol": {"at_point_1": true, "at_point_2": true, "at_point_3": true, "at_point_4": true}
+    }
     }

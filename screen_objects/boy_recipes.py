@@ -26,7 +26,8 @@ boy_recipes['patrol boy'] = {
     'colour': (220, 0, 0),
     'behaviour': {'plan_file': 'brains/action_planning/plan_files/patrol.json',
                   'start': {"at_point_1": False, "at_point_2": False, "at_point_3": False, "at_point_4": False},
-                  'goal': {"at_point_1": True, "at_point_2": True, "at_point_3": True, "at_point_4": True},
+                  'priorities': ["get_item", "complete_patrol"],
+                  'target range': 150,
                   'goap': True},
     'accelleration': 4
 }
@@ -35,10 +36,10 @@ boy_recipes['item boy'] = {
     'kind': 'boy',
     'radius': 8,
     'colour': (200, 100, 0),
-    'behaviour': {'plan_file': 'brains/action_planning/plan_files/get_item.json',
+    'behaviour': {'plan_file': 'brains/action_planning/plan_files/patrol.json',
                   'start': {"can_see_item": False, "at_item": False},
-                  'goal': {"at_item": True},
-                  'target range': 300,
+                  'priorities': ["get_item"],
+                  'target range': 250,
                   'goap': True},
     'accelleration': 4
 }

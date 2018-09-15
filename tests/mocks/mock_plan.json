@@ -4,7 +4,7 @@
     "type": "set_by_action"}, 
     {"name": "at_counter",
     "type": "in_location",
-    "rect": [[50, 50], [100, 60]]},
+    "location": "counter"},
     {"name": "paid_for_item",
     "type": "set_by_action"}, 
     {"name": "at_exit",
@@ -43,7 +43,11 @@
         "type": "go_to",
         "goal":[0, 0]
         }
-]
+],
+"goals": {
+    "buy_item": {"has_item": true, "paid_for_item": true, "at_exit": true}
+},
+"locations": {"counter": [[50, 50], [100, 60]]}
 }
 
     

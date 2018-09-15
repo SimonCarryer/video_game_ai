@@ -11,7 +11,11 @@
         "point": [500, 500]}, 
         {"name": "at_point_4",
         "type": "at_point",
-        "point": [500, 10]}],
+        "point": [500, 10]},
+        {"name": "impossible_state",
+        "type": "at_point",
+        "point": [200, 200]}
+    ],
 
     "actions": [
         {"name": "go_to_point_1", 
@@ -38,7 +42,11 @@
         "type": "go_to",
         "goal": [500, 10]
         }
-    ]
+    ],
+    "goals": {
+        "complete_patrol": {"at_point_1": true, "at_point_2": true, "at_point_3": true, "at_point_4": true},
+        "do_the_impossible": {"impossible_state": true}
+    }
     }
     
         

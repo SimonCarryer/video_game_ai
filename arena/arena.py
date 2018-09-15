@@ -6,6 +6,7 @@ class Arena:
         self.w = SCREENRECT.width
         self.h = SCREENRECT.height
         self.screen_objects = []
+        self.managers = []
 
     def add_screen_objects(self, screen_objects):
         for screen_object in screen_objects:
@@ -18,3 +19,7 @@ class Arena:
         for screen_object in self.screen_objects:
             screen_object.update(screen, self.screen_objects)
         self.delete_screen_objects()
+
+    def update_managers(self):
+        for manager in self.managers:
+            manager.update(self.screen_objects)

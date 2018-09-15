@@ -11,7 +11,8 @@ class Brain(object):
     def __init__(self, body, image):
         self.body = body
         self.hindbrain = Hindbrain()
-        self.eyes = Eyes()
+        view_distance = image.get('behaviour', {}).get('target range', 200)
+        self.eyes = Eyes(view_distance=view_distance)
         self.parse_behaviour(image.get('behaviour', {}))
         self.self_image = image
         self.wander_value = 0
@@ -95,7 +96,6 @@ class Brain(object):
             goal_position = self.action.goal()
         else:
             goal = self.eyes.look_for_object(self.body.coords,
-                                             self.target_range,
                                              self.action.target()
                                              )
             if goal is not None:
