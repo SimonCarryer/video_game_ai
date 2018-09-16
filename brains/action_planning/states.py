@@ -82,7 +82,7 @@ class AtPointState(State):
 
     def is_fulfilled(self):
         distance = distance_between_points(self.point, self.body.coords)
-        return distance <= 1
+        return distance <= 10
 
 
 class SetByActionState(State):

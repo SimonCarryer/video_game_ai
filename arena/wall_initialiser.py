@@ -1,6 +1,7 @@
 from screen_objects.wall import Wall, Boundary
 from random import shuffle, randrange
 from screen_objects.location import Location
+from brains.action_planning.plan_builder import manifest_from_file
 import numpy as np
 
 
@@ -69,11 +70,14 @@ def shape():
 
 
 def locations():
+    manifest = manifest_from_file('brains/action_planning/plan_files/shop.json')
+    locations = []
+    for name, rect in manifest['locations'].items():
+        locations.append(Location(rect, display_name=name))
     ailse1 = Wall((100, 100), (100, 500))
     ailse2 = Wall((200, 100), (200, 500))
     ailse3 = Wall((300, 100), (300, 500))
-    location = Location(((100, 100), (150, 150)))
-    return [location, ailse1, ailse2, ailse3]
+    return locations + [ailse1, ailse2, ailse3]
 
 
 def initialise_walls(arena, method):

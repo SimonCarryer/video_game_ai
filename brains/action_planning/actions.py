@@ -32,24 +32,24 @@ class GoToAction(Action):
 
 
 class SeekAction(Action):
-    def __init__(self, target_description, reactions=None, conditions=None):
+    def __init__(self, object_description, reactions=None, conditions=None):
         super(SeekAction, self).__init__(reactions, conditions)
-        self.target_description = target_description
+        self.object_description = object_description
 
     def behaviour(self):
         return 'seek'
 
     def target(self):
-        return self.target_description
+        return self.object_description
 
 
 class FleeAction(Action):
-    def __init__(self, target_description, reactions=None, conditions=None):
+    def __init__(self, object_description, reactions=None, conditions=None):
         super(FleeAction, self).__init__(reactions, conditions)
-        self.target_description = target_description
+        self.object_description = object_description
 
     def behaviour(self):
         return 'flee'
 
     def target(self):
-        return self.target_description
+        return self.object_description

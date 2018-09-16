@@ -52,6 +52,7 @@ class PlanInterpreter():
         completed_goals = [i for i in self.goal.keys()]
         for state in self.states:
             if state.name in completed_goals:
+                print "set to false: %s" % state.name
                 state.fulfilled = False
 
     def succeed(self):

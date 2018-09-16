@@ -32,13 +32,13 @@ boy_recipes['patrol boy'] = {
     'accelleration': 4
 }
 
-boy_recipes['item boy'] = {
+boy_recipes['customer'] = {
     'kind': 'boy',
-    'radius': 8,
+    'radius': 6,
     'colour': (200, 100, 0),
-    'behaviour': {'plan_file': 'brains/action_planning/plan_files/patrol.json',
-                  'start': {"can_see_item": False, "at_item": False},
-                  'priorities': ["get_item"],
+    'behaviour': {'plan_file': 'brains/action_planning/plan_files/shop.json',
+                  'start': {"can_see_item": False, "at_exit": False, 'got_item': False, 'at_counter': False},
+                  'priorities': ["buy_item"],
                   'target range': 250,
                   'goap': True},
     'accelleration': 4

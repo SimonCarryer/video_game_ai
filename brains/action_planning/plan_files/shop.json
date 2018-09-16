@@ -1,0 +1,50 @@
+{
+    "states": [
+        {"name": "can_see_item",
+        "type": "see_object",
+        "object_description": {"kind": "item"},
+        "sticky": false},
+        {"name": "at_counter",
+        "type": "in_location",
+        "location": "counter",
+        "sticky": true},
+        {"name": "at_exit",
+        "type": "in_location",
+        "location": "exit",
+        "sticky": false},
+        {"name": "got_item",
+        "type": "close_to_object",
+        "distance": 15,
+        "object_description": {"kind": "item"},
+        "sticky": true}
+    ],
+    "actions": [
+        {"name": "get_item", 
+        "conditions": {"got_item": false, "can_see_item": true},
+        "reactions":{"got_item": true},
+        "type": "seek",
+        "object_description": {"kind": "item"}
+        },
+        {"name": "pay_for_item",
+        "conditions":{"at_counter": false, "got_item": true},
+        "reactions":{"at_counter": true},
+        "type": "go_to",
+        "goal":[520, 520]},
+        {"name": "leave",
+        "conditions":{"at_exit": false, "got_item": true, "at_counter": true},
+        "reactions":{"at_exit": true},
+        "type": "go_to",
+        "goal":[0, 0]
+        }
+    ],
+    "goals": {
+        "buy_item": {"got_item": true, "at_counter": true, "at_exit": true}
+    },
+    "locations": {
+        "counter": [[500, 500], [600, 550]],
+        "exit": [[0, 0], [50, 50]]
+    }
+    }
+    
+        
+    
