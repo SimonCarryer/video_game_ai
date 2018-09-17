@@ -10,8 +10,9 @@ def pathfinding_boy(arena):
 
 
 def goap_boys(arena):
-    customer = Boy((100, 105), (20, 0), 'customer')
-    return [customer]
+    customer = Boy((50, 105), (10, 0), 'customer')
+    customer2 = Boy((60, 130), (10, 0), 'customer')
+    return [customer, customer2]
 
 
 def all_the_boys():

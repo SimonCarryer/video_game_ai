@@ -4,17 +4,19 @@
         "type": "see_object",
         "object_description": {"kind": "item"},
         "sticky": false},
-        {"name": "at_counter",
+        {"name": "paid_for_item",
         "type": "in_location",
         "location": "counter",
+        "requirements": {"got_item": true},
         "sticky": true},
         {"name": "at_exit",
         "type": "in_location",
         "location": "exit",
+        "requirements": {"paid_for_item": true},
         "sticky": false},
         {"name": "got_item",
-        "type": "close_to_object",
-        "distance": 15,
+        "type": "pick_up_item",
+        "requirements": {"got_item": false},
         "object_description": {"kind": "item"},
         "sticky": true}
     ],
@@ -26,19 +28,19 @@
         "object_description": {"kind": "item"}
         },
         {"name": "pay_for_item",
-        "conditions":{"at_counter": false, "got_item": true},
-        "reactions":{"at_counter": true},
+        "conditions":{"paid_for_item": false, "got_item": true},
+        "reactions":{"paid_for_item": true},
         "type": "go_to",
         "goal":[520, 520]},
         {"name": "leave",
-        "conditions":{"at_exit": false, "got_item": true, "at_counter": true},
+        "conditions":{"at_exit": false, "got_item": true, "paid_for_item": true},
         "reactions":{"at_exit": true},
         "type": "go_to",
         "goal":[0, 0]
         }
     ],
     "goals": {
-        "buy_item": {"got_item": true, "at_counter": true, "at_exit": true}
+        "buy_item": {"got_item": true, "paid_for_item": true, "at_exit": true}
     },
     "locations": {
         "counter": [[500, 500], [600, 550]],

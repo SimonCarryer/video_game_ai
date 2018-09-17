@@ -14,10 +14,14 @@ def test_item_can_be_seen():
     assert eyes.look_for_object(coords, {'kind': 'item'}) == item
 
 
-def test_item_gets_picked_up():
-    item = Item((10, 10), (100, 100, 100))
-    boy = Boy(np.array((10.0, 10.0)), np.array((0.0, 0.0)), 'tootling boy')
-    list_of_game_objects = [boy]
-    assert not item.delete
-    item.get_picked_up(list_of_game_objects)
-    assert item.delete
+def test_pick_up_interaction_with_states():
+    item = Item((20, 10), (100, 100, 100))
+    boy = Boy(np.array((0.0, 10.0)), np.array((0.0, 0.0)), 'customer')
+    list_of_game_objects = [item, boy]
+    for i in range(20):
+        boy.body.move(list_of_game_objects, np.array([-1, 0]))
+        boy.brain.eyes.update(list_of_game_objects)
+        boy.brain.interpreter.update()
+        assert boy.brain.interpreter.state['got_item'] == item.delete
+        if item.delete:
+            list_of_game_objects = [boy]

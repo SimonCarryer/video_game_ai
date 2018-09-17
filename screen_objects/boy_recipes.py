@@ -1,4 +1,4 @@
-from copy import copy
+from copy import deepcopy
 
 boy_recipes = {}
 
@@ -37,11 +37,11 @@ boy_recipes['customer'] = {
     'radius': 6,
     'colour': (200, 100, 0),
     'behaviour': {'plan_file': 'brains/action_planning/plan_files/shop.json',
-                  'start': {"can_see_item": False, "at_exit": False, 'got_item': False, 'at_counter': False},
+                  'start': {"can_see_item": False, "at_exit": False, 'got_item': False, 'paid_for_item': False},
                   'priorities': ["buy_item"],
                   'target range': 250,
                   'goap': True},
-    'accelleration': 4
+    'accelleration': 2
 }
 
 
@@ -77,6 +77,6 @@ class CookBook:
         self.recipes = recipes
 
     def get_recipe(self, recipe_name):
-        return copy(self.recipes[recipe_name])
+        return deepcopy(self.recipes[recipe_name])
 
 boy_cookbook = CookBook(boy_recipes)

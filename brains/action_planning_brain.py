@@ -2,6 +2,7 @@ from .brain import Brain
 from action_planning.plan_interpreter import PlanInterpreter
 
 
+
 class ActionPlanningBrain(Brain):
     def __init__(self, body, image):
         super(ActionPlanningBrain, self).__init__(body, image)

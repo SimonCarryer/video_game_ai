@@ -65,6 +65,7 @@ def test_update():
     body = MockBody()
     eyes = MockEyes()
     interpreter = PlanInterpreter(body, eyes, file_path, start, priorities)
+    interpreter.update()
     action = interpreter.current_action()
     assert (action.goal() == [10, 10]).all()
     body.coords = [10, 10]

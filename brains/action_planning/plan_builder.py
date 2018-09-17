@@ -40,16 +40,18 @@ state_dict = {
     "set_by_action": SetByActionState,
     "in_location": LocationState,
     "see_object": SeeObjectState,
-    "close_to_object": CloseToObjectState
+    "close_to_object": CloseToObjectState,
+    "pick_up_item": PickedUpItemState
 }
 
 
-def parse_states(plan_manifest, body, eyes):
+def parse_states(plan_manifest, body, eyes, global_state=None):
     parsed_states = []
     for state in plan_manifest['states']:
         state_type = state.pop('type')
         state['eyes'] = eyes
         state['body'] = body
+        state['state'] = global_state
         if state.get('location'):
             state['rect'] = plan_manifest['locations'][state.pop('location')]
         obj = state_dict[state_type](**state)

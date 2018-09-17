@@ -15,6 +15,7 @@ class Body:
                                            recipe['radius'],
                                            image=recipe)
         self.coords = self.movement.coords
+        self.radius = recipe['radius']
         self.velocity = self.movement.velocity
 
     def update(self, screen):

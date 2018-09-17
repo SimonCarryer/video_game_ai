@@ -13,8 +13,8 @@ class PlanInterpreter():
         self.manifest = manifest_from_file(plan_file_path)
         self.planner = create_plan(self.manifest)
         self.action_dict = parse_actions(self.manifest)
-        self.states = parse_states(self.manifest, body, eyes)
         self.state = start_state
+        self.states = parse_states(self.manifest, body, eyes, self.state)
         self.priorities = priorities
         self.goal = self.manifest['goals'][priorities[0]]
         self.path = self.formulate_plan()
@@ -52,7 +52,6 @@ class PlanInterpreter():
         completed_goals = [i for i in self.goal.keys()]
         for state in self.states:
             if state.name in completed_goals:
-                print "set to false: %s" % state.name
                 state.fulfilled = False
 
     def succeed(self):
