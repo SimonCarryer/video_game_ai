@@ -43,6 +43,17 @@ class SeekAction(Action):
         return self.object_description
 
 
+class SeekMouseAction(Action):
+    def __init__(self, reactions=None, conditions=None):
+        super(SeekMouseAction, self).__init__(reactions, conditions)
+
+    def behaviour(self):
+        return 'seek'
+
+    def target(self):
+        return 'mouse pointer'
+
+
 class FleeAction(Action):
     def __init__(self, object_description, reactions=None, conditions=None):
         super(FleeAction, self).__init__(reactions, conditions)

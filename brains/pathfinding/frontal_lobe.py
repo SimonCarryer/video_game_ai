@@ -1,4 +1,4 @@
-from pathfinding.grid import BackgroundGrid
+from .grid import BackgroundGrid
 from util.helpers import unobstructed_edges, find_closest_point_index, walls_vector_from_game_objects
 import numpy as np
 

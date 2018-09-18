@@ -5,7 +5,7 @@ from item_manager.item_manager import ItemManager
 
 def pathfinding_boy(arena):
     hungry_boy = Boy((200, 400), (20, 0), 'pathfinding boy')
-    hungry_boy.initialise_frontal_lobe(arena.h, arena.w, [])
+    hungry_boy.brain.goal_getter.intitialise_grid(arena, 640/20)
     return [hungry_boy]
 
 

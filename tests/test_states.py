@@ -108,25 +108,3 @@ def test_state_with_requirements():
     state.fulfilled = True
     global_state['test_state2'] = True
     assert state.status()
-
-
-def test_pick_up_success_with_two_boys():
-    item = Item((20, 10), (100, 100, 100))
-    other_item = Item((0, 0), (100, 100, 100))
-    boy = Boy(np.array((0.0, 10.0)), np.array((0.0, 0.0)), 'customer')
-    other_boy = Boy(np.array((0.0, 0.0)), np.array((0.0, 0.0)), 'customer')
-    list_of_game_objects = [item, other_item, boy, other_boy]
-    print id(boy.brain.interpreter.state)
-    boy.brain.interpreter.state['got_item'] == True
-    print id(other_boy.brain.interpreter.state)
-    print other_boy.brain.interpreter.state['got_item']
-
-    # for i in range(20):
-    #     other_boy.brain.eyes.update(list_of_game_objects)
-    #     boy.body.move(list_of_game_objects, np.array([-1, 0]))
-    #     boy.brain.eyes.update(list_of_game_objects)
-    #     boy.brain.interpreter.update()
-    #     print boy.brain.interpreter.state['got_item']
-    #     #assert boy.brain.interpreter.state['got_item'] == item.delete
-    #     if item.delete:
-    #         list_of_game_objects = [boy, other_boy]

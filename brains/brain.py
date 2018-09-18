@@ -3,6 +3,9 @@ from util.helpers import *
 from eyes import Eyes
 from numpy.random import normal
 from action_planning.actions import *
+from action_planning.action_planner import ActionGetter, ActionPlanner
+from pathfinding.pathfinder import GoalGetter, PathFindingGoalGetter
+from .memory import DumbMemory, Memory
 import numpy as np
 import random
 
@@ -13,27 +16,30 @@ class Brain(object):
         self.hindbrain = Hindbrain()
         view_distance = image.get('behaviour', {}).get('target range', 200)
         self.eyes = Eyes(view_distance=view_distance)
-        self.parse_behaviour(image.get('behaviour', {}))
         self.self_image = image
+        self.parse_behaviour(image.get('behaviour', {}))
         self.wander_value = 0
 
     def update(self, list_of_game_objects):
         self.eyes.update(list_of_game_objects)
-
+        self.memory.update()
+        self.action_getter.update()
+        self.goal_getter.update()
+        self.action = self.action_getter.action
+        
     def parse_behaviour(self, behaviour_dict):
+        if behaviour_dict.get('goap', False):
+            self.action_getter = ActionPlanner(self.self_image, self.eyes, self.body)
+        else:
+            self.action_getter = ActionGetter(self.self_image, self.eyes, self.body)
+        if behaviour_dict.get('pathfind', False):
+            self.memory = Memory(self.body, self.eyes)
+            self.goal_getter = PathFindingGoalGetter(self.body, self.eyes, self.memory)
+        else:
+            self.memory = DumbMemory(self.body, self.eyes)
+            self.goal_getter = GoalGetter(self.body, self.eyes)
         self.target = behaviour_dict.get('target')
-        self.pathfind = behaviour_dict.get('pathfind', False)
         self.target_range = behaviour_dict.get('target range')
-        self.action = Action()
-        if behaviour_dict.get('target behaviour') == 'seek':
-            self.action = SeekAction(behaviour_dict.get('target'))
-        elif behaviour_dict.get('target behaviour') == 'flee':
-            self.action = FleeAction(behaviour_dict.get('target'))
-
-    def remember_what_you_see(self, list_of_game_objects):
-        visible = self.eyes.visible_objects(self.body.coords, list_of_game_objects)
-        self.memory.remember_walls(visible)
-        self.frontal_lobe.populate_grid(self.memory.known_walls)
 
     def seek(self,
              target_position,
@@ -42,14 +48,11 @@ class Brain(object):
                                                                      self.body.velocity,
                                                                      target_position
                                                                      )
-        if not self.pathfind:
-            avoid_vector = self.hindbrain.avoid(self.body.coords,
+        avoid_vector = self.hindbrain.avoid(self.body.coords,
                                                 vector_to_target,
                                                 collision,
                                                 target_position=target_position
                                                 )
-        else:
-            avoid_vector = np.array((0, 0))
         arrive_factor = self.hindbrain.arrive_factor(self.body.coords,
                                                      self.body.velocity,
                                                      target_position)
@@ -87,26 +90,9 @@ class Brain(object):
         vector = normalise_vector(self.body.velocity + wander_force)
         return vector
 
-    def goal_position(self,
-                      list_of_game_objects):
-        goal_position = None
-        if self.action.target() == 'mouse pointer':
-            goal_position = self.eyes.get_mouse_position()
-        if self.action.target() is None:
-            goal_position = self.action.goal()
-        else:
-            goal = self.eyes.look_for_object(self.body.coords,
-                                             self.action.target()
-                                             )
-            if goal is not None:
-                goal_position = goal.coords()
-        if goal_position is not None and self.pathfind and not self.eyes.direct_path_to_goal(self.body.coords, goal_position):
-            goal_position = self.frontal_lobe.pathfind_goal(self.body.coords, goal_position)
-        return goal_position
-
     def get_goal_vector(self,
                         list_of_game_objects):
-        goal = self.goal_position(list_of_game_objects)
+        goal = self.goal_getter.goal_position(self.action) #self.goal_position(list_of_game_objects)
         collision = self.eyes.look_for_collisions(self.body.coords,
                                                   self.body.velocity,
                                                   self.self_image['radius']
