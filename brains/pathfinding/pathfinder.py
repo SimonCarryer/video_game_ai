@@ -2,7 +2,7 @@ from .grid import BackgroundGrid
 from util.helpers import *
 
 
-class GoalGetter:
+class GoalGetter(object):
     def __init__(self, body, eyes):
         self.body = body
         self.eyes = eyes
