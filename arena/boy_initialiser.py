@@ -11,7 +11,9 @@ def pathfinding_boy(arena):
 
 def goap_boys(arena):
     customer = Boy((50, 105), (10, 0), 'customer')
+    customer.brain.goal_getter.intitialise_grid(arena, 24)
     customer2 = Boy((60, 130), (10, 0), 'customer')
+    customer2.brain.goal_getter.intitialise_grid(arena, 24)
     return [customer, customer2]
 
 

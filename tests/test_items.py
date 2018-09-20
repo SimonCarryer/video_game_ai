@@ -21,7 +21,7 @@ def test_pick_up_interaction_with_states():
     for i in range(20):
         boy.body.move(list_of_game_objects, np.array([-1, 0]))
         boy.brain.eyes.update(list_of_game_objects)
-        boy.brain.interpreter.update()
-        assert boy.brain.interpreter.state['got_item'] == item.delete
+        boy.brain.action_getter.interpreter.update()
+        assert boy.brain.action_getter.interpreter.state['got_item'] == item.delete
         if item.delete:
             list_of_game_objects = [boy]

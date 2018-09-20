@@ -15,7 +15,7 @@ class Location(ScreenObject):
         return None
 
     def coords(self):
-        return self.rect.mean()
+        return self.rect.mean(axis=1)
 
     def update(self, screen, list_of_game_objects):
         self.sprite.draw(screen)

@@ -40,7 +40,8 @@ boy_recipes['customer'] = {
                   'start': {"can_see_item": False, "at_exit": False, 'got_item': False, 'paid_for_item': False},
                   'priorities': ["buy_item"],
                   'target range': 250,
-                  'goap': True},
+                  'goap': True,
+                  'pathfind': True},
     'accelleration': 2
 }
 
