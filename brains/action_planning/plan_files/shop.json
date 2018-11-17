@@ -4,11 +4,19 @@
         "type": "see_object",
         "object_description": {"kind": "item"},
         "sticky": false},
+        {"name": "shopkeeper",
+            "type": "role",
+            "role": "shopkeeper",
+            "sticky": false},
         {"name": "paid_for_item",
         "type": "in_location",
         "location": "counter",
-        "requirements": {"got_item": true},
+        "requirements": {"got_item": true, "shopkeeper_at_counter": true},
         "sticky": true},
+        {"name": "at_counter",
+        "type": "in_location",
+        "location": "counter",
+        "sticky": false},
         {"name": "at_exit",
         "type": "in_location",
         "location": "exit",
@@ -18,20 +26,58 @@
         "type": "pick_up_item",
         "requirements": {"got_item": false},
         "object_description": {"kind": "item"},
-        "sticky": true}
+        "sticky": true},
+        {"name": "customer_at_counter",
+        "type": "object_in_location",
+        "object_description": {"kind": "boy"},
+        "location": "counter",
+        "sticky": false},
+        {"name": "shopkeeper_at_counter",
+        "type": "object_in_location",
+        "object_description": {"kind": "boy", "radius": 8},
+        "location": "counter",
+        "sticky": false},
+        {"name": "sold_item",
+        "type": "set_by_action",
+        "sticky": false}
     ],
     "actions": [
+        {"name": "sell_item_to_customer",
+        "conditions": {"customer_at_counter": true, "at_counter": true},
+        "reactions": {"sold_item": true},
+        "type": "go_to",
+        "goal":[520, 520]
+        },
         {"name": "get_item", 
         "conditions": {"got_item": false, "can_see_item": true},
         "reactions":{"got_item": true},
         "type": "seek",
         "object_description": {"kind": "item"}
         },
+        {"name": "go_to_counter",
+        "conditions": {},
+        "reactions": {"at_counter": true},
+        "type": "go_to",
+        "goal":[540, 520]
+        },
+        {"name": "go_out_the_back",
+            "conditions": {"shopkeeper": true},
+            "reactions": {"can_see_item": true},
+            "type": "go_to",
+            "goal":[200, 600]
+            },
         {"name": "pay_for_item",
-        "conditions":{"paid_for_item": false, "got_item": true},
+        "conditions":{"paid_for_item": false, "got_item": true, "at_counter": true, "shopkeeper_at_counter": true},
         "reactions":{"paid_for_item": true},
         "type": "go_to",
-        "goal":[520, 520]},
+        "goal":[540, 520]
+        },
+        {"name": "wait_for_shopkeeper",
+        "conditions": {"paid_for_item": false, "got_item": true, "at_counter": true, "shopkeeper_at_counter": false},
+        "reactions": {"shopkeeper_at_counter": true},
+        "type": "go_to",
+        "goal":[540, 520]
+        },
         {"name": "leave",
         "conditions":{"at_exit": false, "got_item": true, "paid_for_item": true},
         "reactions":{"at_exit": true},
@@ -40,11 +86,13 @@
         }
     ],
     "goals": {
-        "buy_item": {"got_item": true, "paid_for_item": true, "at_exit": true}
+        "buy_item": {"got_item": true, "paid_for_item": true, "at_exit": true},
+        "sell_item": {"sold_item": true}
     },
     "locations": {
         "counter": [[500, 500], [600, 550]],
-        "exit": [[0, 0], [50, 50]]
+        "exit": [[0, 0], [50, 50]],
+        "out the back": [[0, 550], [100, 640]]
     }
     }
     

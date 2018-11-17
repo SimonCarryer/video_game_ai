@@ -74,10 +74,13 @@ def locations():
     locations = []
     for name, rect in manifest['locations'].items():
         locations.append(Location(rect, display_name=name))
-    ailse1 = Wall((100, 100), (100, 500))
-    ailse2 = Wall((200, 100), (200, 500))
-    ailse3 = Wall((300, 100), (300, 500))
-    return locations + [ailse1, ailse2, ailse3]
+    ailse1 = Wall((100, 100), (100, 450))
+    ailse2 = Wall((200, 100), (200, 450))
+    ailse3 = Wall((300, 100), (300, 450))
+    out_the_back = [
+        Wall((0, 550), (500, 550))
+    ]
+    return locations + [ailse1, ailse2, ailse3] + out_the_back
 
 
 def initialise_walls(arena, method):

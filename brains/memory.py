@@ -4,8 +4,9 @@ from collections import defaultdict
 
 class DumbMemory:
     def __init__(self, body, eyes):
-        self.boy = body
+        self.body = body
         self.eyes = eyes
+        self.storage = {}
 
     def update(self):
         pass
@@ -16,6 +17,7 @@ class Memory:
         self.body = body
         self.eyes = eyes
         self.known_walls = []
+        self.storage = {}
 
     def update(self):
         visible = self.eyes.visible_objects(self.body.coords)

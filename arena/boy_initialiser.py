@@ -1,6 +1,9 @@
 from screen_objects.boy import Boy
 from screen_objects.item import Item
 from item_manager.item_manager import ItemManager
+from item_manager.customer_manager import CustomerManager
+from brains.pathfinding.grid import BackgroundGrid
+from util.helpers import walls_vector_from_game_objects
 
 
 def pathfinding_boy(arena):
@@ -10,15 +13,19 @@ def pathfinding_boy(arena):
 
 
 def goap_boys(arena):
-    customer = Boy((50, 105), (10, 0), 'customer')
-    customer.brain.goal_getter.intitialise_grid(arena, 24)
-    customer2 = Boy((60, 130), (10, 0), 'customer')
-    customer2.brain.goal_getter.intitialise_grid(arena, 24)
-    return [customer, customer2]
+    #walls_vector = walls_vector_from_game_objects(arena.screen_objects)
+    #grid = BackgroundGrid(arena.w, arena.h, 24)
+    #grid.calculate_edges(walls_vector)
+    shopkeeper = Boy((520, 520), (10, 0), 'shopkeeper')
+    #customer = Boy((50, 105), (10, 0), 'customer')
+    #customer.brain.goal_getter.intitialise_grid(grid)
+    #customer2 = Boy((60, 130), (10, 0), 'customer')
+    #customer2.brain.goal_getter.intitialise_grid(grid)
+    return [shopkeeper]
 
 
 def all_the_boys():
-    boy = Boy((100, 105), (20, 0), 'tootling boy')
+    boy = Boy((100, 105), (0, 0), 'tootling boy')
     scaredy_boy = Boy((200, 100), (-20, 0), 'scaredy boy')
     hungry_boy = Boy((200, 400), (20, 0), 'hungry boy')
     friendly_boy = Boy((400, 400), (20, 0), 'friendly boy')
@@ -32,5 +39,6 @@ def initialise_boys(arena, method):
         the_boys = pathfinding_boy(arena)
     elif method == 'goap':
         the_boys = goap_boys(arena)
+        arena.managers.append(CustomerManager(arena))
         arena.managers.append(ItemManager(arena))
     arena.add_screen_objects(the_boys)

@@ -1,5 +1,6 @@
 from .grid import BackgroundGrid
 from util.helpers import *
+import numpy as np
 
 
 class GoalGetter(object):
@@ -31,9 +32,10 @@ class PathFindingGoalGetter(GoalGetter):
         self.eyes = eyes
         self.memory = memory
 
-    def intitialise_grid(self, arena, grid_spacing):
+    def intitialise_grid(self, arena, grid_spacing, walls=[]):
         self.grid = BackgroundGrid(arena.w, arena.h, grid_spacing)
-        self.grid.calculate_edges([])
+        walls = walls_vector_from_game_objects(walls)
+        self.grid.calculate_edges(walls)
 
     def goal_position(self, action):
         goal_position = super(PathFindingGoalGetter, self).goal_position(action)
@@ -68,3 +70,41 @@ class PathFindingGoalGetter(GoalGetter):
             return np.array(path[0])
         else:
             return None
+
+
+class FastPathFindingGoalGetter(PathFindingGoalGetter):
+    def __init__(self, body, eyes, memory):
+        super(FastPathFindingGoalGetter, self).__init__(body, eyes, memory)
+        self.memory.storage['last_goal'] = np.array([None, None])
+        self.memory.storage['last_target_node'] = np.array([None, None])
+        self.memory.storage['path'] = []
+
+    def update(self):
+        pass
+
+    def intitialise_grid(self, grid):
+        self.grid = grid
+
+    def construct_path(self, goal):
+        current_node = self.closest_node(self.body.coords)
+        goal_node = self.closest_node(goal)
+        path = self.grid.pathfind(current_node, goal_node)
+        self.memory.storage['path'] = path
+
+    def pathfind_goal(self, goal):
+        if (self.memory.storage['last_goal'] == goal).all():
+            path = self.memory.storage['path']
+            if path is not None and len(path) > 1:
+                target_node = np.array(path[1])
+            elif path is not None and len(path) == 1:
+                target_node = np.array(path[0])
+            if distance_between_points(self.body.coords, target_node) < 5:
+                self.memory.storage['path'] = path[1:]
+        else:
+            self.construct_path(goal)
+            path = self.memory.storage['path']
+            if path is not None and len(path) > 1:
+                target_node = np.array(path[1])
+            elif path is not None and len(path) == 1:
+                target_node = np.array(path[0])
+        return target_node

@@ -38,8 +38,6 @@ class PlanInterpreter():
         for state in self.states:
             self.state[state.name] = state.status()
         current_action = self.current_action()
-        if current_action.succeed(self.state):
-            current_action.reactions
         if self.succeed():
             self.set_sticky_states_to_false()
 

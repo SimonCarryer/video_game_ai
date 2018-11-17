@@ -4,7 +4,7 @@ from eyes import Eyes
 from numpy.random import normal
 from action_planning.actions import *
 from action_planning.action_planner import ActionGetter, ActionPlanner
-from pathfinding.pathfinder import GoalGetter, PathFindingGoalGetter
+from pathfinding.pathfinder import GoalGetter, PathFindingGoalGetter, FastPathFindingGoalGetter
 from .memory import DumbMemory, Memory
 import numpy as np
 import random
@@ -35,6 +35,9 @@ class Brain(object):
         if behaviour_dict.get('pathfind', False):
             self.memory = Memory(self.body, self.eyes)
             self.goal_getter = PathFindingGoalGetter(self.body, self.eyes, self.memory)
+        elif behaviour_dict.get('fast pathfind', False):
+            self.memory = DumbMemory(self.body, self.eyes)
+            self.goal_getter = FastPathFindingGoalGetter(self.body, self.eyes, self.memory)
         else:
             self.memory = DumbMemory(self.body, self.eyes)
             self.goal_getter = GoalGetter(self.body, self.eyes)
@@ -88,6 +91,8 @@ class Brain(object):
         wander_force = (normalise_vector(perpendicular_vector(self.body.velocity))
                         ) * self.wander_value
         vector = normalise_vector(self.body.velocity + wander_force)
+        if vector.sum() == 0:
+            vector = np.array((1, 0))
         return vector
 
     def get_goal_vector(self,

@@ -34,14 +34,29 @@ boy_recipes['patrol boy'] = {
 
 boy_recipes['customer'] = {
     'kind': 'boy',
+    'role': 'customer',
     'radius': 6,
     'colour': (200, 100, 0),
     'behaviour': {'plan_file': 'brains/action_planning/plan_files/shop.json',
                   'start': {"can_see_item": False, "at_exit": False, 'got_item': False, 'paid_for_item': False},
                   'priorities': ["buy_item"],
-                  'target range': 250,
+                  'target range': 500,
                   'goap': True,
-                  'pathfind': True},
+                  'fast pathfind': True},
+    'accelleration': 1
+}
+
+boy_recipes['shopkeeper'] = {
+    'kind': 'boy',
+    'role': 'shopkeeper',
+    'radius': 8,
+    'colour': (220, 0, 0),
+    'behaviour': {'plan_file': 'brains/action_planning/plan_files/shop.json',
+                  'start': {"can_see_item": False, "at_exit": False, 'got_item': False, 'paid_for_item': False},
+                  'priorities': ["sell_item"],
+                  'target range': 500,
+                  'goap': True,
+                  'fast pathfind': True},
     'accelleration': 2
 }
 

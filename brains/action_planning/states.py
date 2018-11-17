@@ -117,3 +117,13 @@ class SetByActionState(State):
 
     def is_fulfilled(self):
         return self.fulfilled
+
+
+class RightRoleState(State):
+    def __init__(self, name, body, eyes, role, requirements=None, state=None, sticky=True):
+        super(RightRoleState, self).__init__(name, body, eyes, requirements, state, sticky)
+        self.role = role
+        self.fulfilled = False
+
+    def is_fulfilled(self):
+        return self.body.recipe.get('role') == self.role

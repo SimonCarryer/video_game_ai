@@ -41,7 +41,10 @@ state_dict = {
     "in_location": LocationState,
     "see_object": SeeObjectState,
     "close_to_object": CloseToObjectState,
-    "pick_up_item": PickedUpItemState
+    "pick_up_item": PickedUpItemState,
+    "object_in_location": ObjectInLocationState,
+    "set_by_action": State,
+    "role": RightRoleState
 }
 
 

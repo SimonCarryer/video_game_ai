@@ -5,6 +5,7 @@ from physics.physical_object import ObstructingCircle
 
 class Body:
     def __init__(self, coords, initial_velocity, recipe):
+        self.recipe = recipe
         self.sprite = Visible(coords,
                               recipe['radius'],
                               colour=recipe['colour'])
