@@ -1,7 +1,9 @@
 from screen_objects.item import Item
+from item_manager.item_manager import ItemManager
 from brains.eyes import Eyes
 from screen_objects.boy import Boy
 import numpy as np
+from mocks.mock_arena import MockArena  # heeyyy MockArena!
 
 
 def test_item_can_be_seen():
@@ -12,6 +14,9 @@ def test_item_can_be_seen():
     coords = np.array((0, 0))
     assert len(eyes.visible_objects(coords)) == 1
     assert eyes.look_for_object(coords, {'kind': 'item'}) == item
+    assert eyes.look_for_object(coords, {'kind': 'item', 'item type': 'shop'}) is None
+    item.image['item type'] = 'shop'
+    assert eyes.look_for_object(coords, {'kind': 'item', 'item type': 'shop'}) == item
 
 
 def test_pick_up_interaction_with_states():
@@ -25,3 +30,11 @@ def test_pick_up_interaction_with_states():
         assert boy.brain.action_getter.interpreter.state['got_item'] == item.delete
         if item.delete:
             list_of_game_objects = [boy]
+
+
+def test_item_actions():
+    item_man = ItemManager(MockArena())
+    actions = [({'got_item': True}, np.array((0, 0)))]
+    items = [Item((10, 10), (100, 100, 100)), Item((10, 10), (100, 100, 100))]
+    item_man.item_actions(actions, items)
+    assert [item.delete for item in items] == [True, False]

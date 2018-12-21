@@ -85,6 +85,7 @@ class PickedUpItemState(State):
                 return True
         else:
             return False
+            
 
 class ObjectInLocationState(State):
     def __init__(self, name, body, eyes, rect, object_description, requirements=None, state=None, sticky=True):

@@ -13,14 +13,11 @@ def pathfinding_boy(arena):
 
 
 def goap_boys(arena):
-    #walls_vector = walls_vector_from_game_objects(arena.screen_objects)
-    #grid = BackgroundGrid(arena.w, arena.h, 24)
-    #grid.calculate_edges(walls_vector)
+    walls_vector = walls_vector_from_game_objects(arena.screen_objects)
+    grid = BackgroundGrid(arena.w, arena.h, 24)
+    grid.calculate_edges(walls_vector)
     shopkeeper = Boy((520, 520), (10, 0), 'shopkeeper')
-    #customer = Boy((50, 105), (10, 0), 'customer')
-    #customer.brain.goal_getter.intitialise_grid(grid)
-    #customer2 = Boy((60, 130), (10, 0), 'customer')
-    #customer2.brain.goal_getter.intitialise_grid(grid)
+    shopkeeper.brain.goal_getter.intitialise_grid(grid)
     return [shopkeeper]
 
 

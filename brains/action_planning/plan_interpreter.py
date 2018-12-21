@@ -2,6 +2,7 @@ from .goap import Planner, Action_List
 from plan_builder import *
 from .actions import Action
 
+ACTION_BUS = []
 
 class PlanInterpreter():
     def __init__(self,
@@ -10,6 +11,8 @@ class PlanInterpreter():
                  plan_file_path,
                  start_state,
                  priorities):
+        self.body = body
+        self.eyes = eyes
         self.manifest = manifest_from_file(plan_file_path)
         self.planner = create_plan(self.manifest)
         self.action_dict = parse_actions(self.manifest)
@@ -37,10 +40,15 @@ class PlanInterpreter():
     def update_state(self):
         for state in self.states:
             self.state[state.name] = state.status()
-        current_action = self.current_action()
+        action = self.current_action()
+        if action.succeed(self.state):
+            ACTION_BUS.append((action.reactions[0], self.body.coords))
+            for state in self.states:
+                if state.name in action.reactions[0]:
+                    state.fulfilled = True
         if self.succeed():
             self.set_sticky_states_to_false()
-
+                
     def update(self):
         self.update_state()
         self.determine_goal()

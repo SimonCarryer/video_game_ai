@@ -7,7 +7,7 @@ class Action(object):
         self.conditions = conditions
 
     def succeed(self, state):
-        return self.conditions.viewitems() <= state.viewitems()
+        return self.reactions[0].viewitems() <= state.viewitems()
 
     def behaviour(self):
         return 'seek'
@@ -17,6 +17,25 @@ class Action(object):
 
     def goal(self):
         return None
+
+
+class PerformAction(Action):
+    def __init__(self, delay, reactions=None, conditions=None):
+        super(PerformAction, self).__init__(reactions, conditions)
+        self.delay = delay
+        self.counter = 0
+
+    def succeed(self, state):
+        success = False
+        if self.conditions.viewitems() <= state.viewitems():
+            self.counter += 1
+            if self.counter >= self.delay:
+                self.counter = 0
+                success = True
+        return success
+
+    def behaviour(self):
+        return 'stop'
 
 
 class GoToAction(Action):

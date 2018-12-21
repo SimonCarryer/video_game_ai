@@ -95,9 +95,12 @@ class Brain(object):
             vector = np.array((1, 0))
         return vector
 
+    def stop(self, goal, collision):
+        return self.hindbrain.stop(self.body.coods, self.body.velocity)
+
     def get_goal_vector(self,
                         list_of_game_objects):
-        goal = self.goal_getter.goal_position(self.action) #self.goal_position(list_of_game_objects)
+        goal = self.goal_getter.goal_position(self.action)
         collision = self.eyes.look_for_collisions(self.body.coords,
                                                   self.body.velocity,
                                                   self.self_image['radius']
@@ -107,8 +110,10 @@ class Brain(object):
                 vector = self.seek(goal, collision)
             elif self.action.behaviour() == 'flee':
                 vector = self.flee(goal, collision)
+            elif self.action.behaviour() == 'stop':
+                vector = self.stop(goal, collision)
         else:
-             vector = self.wander(goal,
-                                  collision)
+            vector = self.wander(goal,
+                                 collision)
         return vector
 

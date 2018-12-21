@@ -6,9 +6,9 @@ import numpy as np
 
 
 class Item(ScreenObject):
-    def __init__(self, coords, colour):
+    def __init__(self, coords, colour, radius=5):
         super(Item, self).__init__()
-        self.radius = 5
+        self.radius = radius
         self.image = {'kind': 'item', 'colour': colour}
         self.start_coords = np.array(coords)
         self.sprite = Visible(coords,

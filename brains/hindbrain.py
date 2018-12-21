@@ -37,3 +37,7 @@ class Hindbrain:
             return current_distance_to_target/self.arrive_distance
         else: 
             return 1.0
+
+    def stop(self, position, velocity):
+        speed = magnitude_vector(velocity)
+        return -normalise_vector(velocity)*speed
